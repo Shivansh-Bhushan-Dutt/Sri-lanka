@@ -29,39 +29,44 @@ export default function App() {
       console.warn('Could not save enquiry to localStorage', err);
     }
 
-    const form = document.createElement('form');
-    form.action = 'https://formsubmit.co/shivansh@immerseindiatours.com';
-    form.method = 'POST';
-    form.target = 'enquiry-submit-frame';
-    form.style.display = 'none';
+    const submitViaApi = async () => {
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const endpoint = import.meta.env.VITE_ENQUIRY_ENDPOINT || (isLocalhost ? 'http://localhost:3001/api/enquiry' : '');
 
-    const fields = [
-      ['name', enquiryName],
-      ['phone', enquiryPhone],
-      ['email', enquiryEmail],
-      ['message', enquiryMessage],
-      ['_subject', subject],
-      ['_captcha', 'false'],
-      ['_template', 'table'],
-    ];
+      if (!endpoint) {
+        throw new Error('Enquiry endpoint not configured');
+      }
 
-    fields.forEach(([key, value]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = value;
-      form.appendChild(input);
-    });
+      const resp = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: enquiryName, phone: enquiryPhone, email: enquiryEmail, message: enquiryMessage }),
+      });
 
-    document.body.appendChild(form);
-    form.submit();
-    form.remove();
+      const dataText = await resp.text();
+      let data: any = {};
+      try { data = JSON.parse(dataText); } catch { data = { message: dataText }; }
+      return { ok: resp.ok, data };
+    };
 
-    setEnquiryName('');
-    setEnquiryPhone('');
-    setEnquiryEmail('');
-    setEnquiryMessage('');
-    alert('Enquiry submitted. We will contact you soon.');
+    (async () => {
+      try {
+        const { ok, data } = await submitViaApi();
+        if (!ok) {
+          console.error('API submission error', data);
+          throw new Error(data?.error || data?.message || 'Submission failed');
+        }
+
+        setEnquiryName('');
+        setEnquiryPhone('');
+        setEnquiryEmail('');
+        setEnquiryMessage('');
+        alert('Enquiry submitted. We will contact you soon.');
+      } catch (err) {
+        console.error('Enquiry submit failed', err);
+        alert('Submission failed. Please try again later.');
+      }
+    })();
   };
 
   // Download itinerary section as PDF (client-side)
@@ -128,14 +133,15 @@ export default function App() {
             <button onClick={() => scrollToSection('itinerary')} className="text-[#1A1A1A] hover:text-[#C9A961] transition-colors">
               Itinerary
             </button>
-            <a href="/Terms&Conditions.pdf" className="text-[#1A1A1A] hover:text-[#C9A961] transition-colors" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
           </nav>
 
           {/* Book Now Button */}
           <div className="flex items-center gap-4">
-            <span className="text-[#1A1A1A] font-medium">
-              0203 909 5800
-            </span>
+            <a href="tel:02039095800"
+              className="flex items-center gap-2 text-[#1A1A1A] transition-colors font-medium text-lg tracking-wide" >
+              <Phone className="w-5 h-5" />
+              <span>0203 909 5800</span>
+            </a>
             <button
               onClick={() => scrollToSection('enquiry')}
               className="px-6 py-2 bg-[#C9A961] text-[#1A1A1A] hover:bg-[#D4A574] transition-all duration-300 tracking-wide"
@@ -177,15 +183,33 @@ export default function App() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
-                <CreditCard className="w-8 h-8 text-[#C9A961]" />
+              <div className="relative text-center bg-[#FAF7F2] border border-[#C9A961]/40 rounded-2xl px-5 py-8 shadow-[0_12px_35px_rgba(201,169,97,0.18)]">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C9A961] text-[#1A1A1A] px-4 py-1 text-[11px] uppercase tracking-[0.18em] font-medium">
+                  Limited Offer
+                </div>
+
+                <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center">
+                  <CreditCard className="w-8 h-8 text-[#C9A961]" />
+                </div>
+
+                <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">
+                  Early Bird Offer
+                </p>
+
+                <div className="flex items-baseline justify-center gap-3">
+                  <span className="text-base text-[#9A8F7E] line-through">£2350</span>
+                  <span
+                    className="text-4xl text-[#1A1A1A]"
+                    style={{ fontFamily: "var(--font-serif)" }}
+                  >
+                    £2250<span className="text-sm"> pp</span>
+                  </span>
+                </div>
+
+                <p className="text-sm text-[#6B5D4F] mt-2">
+                  Valid Till 15th June
+                </p>
               </div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Early Bird Offer</p>
-              <div className="flex items-baseline justify-center gap-3">
-                <span className="text-base text-[#9A8F7E] line-through">£2350</span>
-                <span className="text-3xl" style={{ fontFamily: 'var(--font-serif)' }}>£2250<span className="text-sm align-top">*</span></span>
-              </div>
-              <p className="text-sm text-[#6B5D4F] mt-2">Valid Till 15th June</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
@@ -206,7 +230,7 @@ export default function App() {
                 <Coffee className="w-8 h-8 text-[#C9A961]" />
               </div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Meals & Stay</p>
-              <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Comfort & Langar</p>
+              <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Comfort & all Meals</p>
             </div>
           </div>
         </div>
@@ -221,18 +245,19 @@ export default function App() {
             <p className="text-[15px]">
               The <strong>Sri Panj Takht Sahib Yatra</strong> is a sacred pilgrimage that covers the Five Takhts—the highest seats of spiritual and temporal authority in Sikhism. These revered Gurudwaras serve as guiding pillars for the Sikh community, preserving tradition, offering spiritual direction, and commemorating defining moments in Sikh history.
             </p>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-1 max-w-3xl mx-auto text-left text-[15px] leading-[1.6]">
-                <p><strong>Sri Hazur Sahib,</strong> Nanded</p>
-                <p><strong>Sri Harmandir Sahib,</strong> Patna</p>
+             <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-x-10 gap-y-1 max-w-[820px] mx-auto text-left text-[15px] leading-[1.6]">
+                <p><strong>Takht Sachkhand Sri Hazur Abchalnagar Sahib,</strong> Nanded</p>
+                <p><strong>Takht Sri Harimandir Ji,</strong> Patna Sahib</p>
 
-                <p><strong>Sri Kesgarh Sahib,</strong> Anandpur Sahib</p>
-                <p><strong>Sri Damdama Sahib,</strong> Talwandi Sabo</p>
+                <p><strong>Takht Sri Kesgarh Sahib,</strong> Anandpur Sahib</p>
+                <p><strong>Takht Sri Damdama Sahib,</strong> Talwandi Sabo</p>
 
                 <p><strong>Sri Akal Takht Sahib,</strong> Amritsar</p>
               </div>
             <p className="text-[15px]">
               This pilgrimage also offers the opportunity to explore other historically significant Gurudwaras, and sacred sites located around these major centers of worship, enriching the spiritual and cultural experience even further.
             </p>
+            <p><strong> Waheguruji ka Khalsa! Waheguruji ki Fateh! </strong></p>
           </div>
         </div>
       </section>
@@ -256,8 +281,8 @@ export default function App() {
               <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>05 October 2026</p>
             </div>
             <div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Starting From</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>£2250</p>
+              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Package price</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £ 2350 pp</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Reservation</p>
@@ -354,46 +379,45 @@ export default function App() {
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Overall</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
                 <li className="text-[14px]">Return flights from London</li>
-                <li className="text-[15px]">All domestic flights</li>
-                <li className="text-[15px]">Private coach transport</li>
+                <li className="text-[14px]">All domestic flights</li>
+                <li className="text-[14px]">Private coach transport</li>
                 <li className="text-[14px]">Experienced Tour manager</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Accommodation</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[15px]">10 nights quality hotels</li>
-                <li className="text-[15px]">Twin/double rooms</li>
-                <li className="text-[15px]">Daily housekeeping</li>
+                <li className="text-[14px]">10 nights quality hotels</li>
+                <li className="text-[14px]">Twin/double rooms</li>
+                <li className="text-[14px]">Daily housekeeping</li>
                 <li className="text-[14px]">Modern amenities</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Experiences</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[15px]">All Five Takhts</li>
+                <li className="text-[14px]">All Five Takhts</li>
                 <li className="text-[14px]">Other Historical Gurudwaras</li>
-                <li className="text-[15px]">Guided Gurudwara tours</li>
-                <li className="text-[15px]">Special Darshans</li>
-                <li className="text-[15px]">Spiritual insights</li>
+                <li className="text-[14px]">Special Darshans</li>
+                <li className="text-[14px]">Spiritual insights</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Meals</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[15px]">Daily breakfast</li>
-                <li className="text-[15px]">Langar participation</li>
-                <li className="text-[15px]">Selected dinners</li>
-                <li className="text-[15px]">Vegetarian options</li>
+                <li className="text-[14px]">Daily breakfast</li>
+                <li className="text-[14px]">Langar participation</li>
+                <li className="text-[14px]">Selected dinners</li>
+                <li className="text-[14px]">Vegetarian options</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Assistance</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[15px]">24/7 support</li>
-                <li className="text-[15px]">Travel documentation</li>
+                <li className="text-[14px]">24/7 support</li>
+                <li className="text-[14px]">Travel documentation</li>
                 <li className="text-[14px]">Pre-departure briefing</li>
-                <li className="text-[15px]">ATOL protection</li>
+                <li className="text-[14px]">ATOL protection</li>
               </ul>
             </div>
           </div>
@@ -401,11 +425,12 @@ export default function App() {
           <div className="pt-12 border-t border-[#D4A574]/30">
             <h2 className="text-3xl mb-8" style={{ fontFamily: 'var(--font-serif)' }}>Your Journey Excludes</h2>
             <ul className="grid md:grid-cols-3 gap-4 text-[#3A3A3A]">
-              <li className="text-[15px]">Any VISA, Insurance, etc.</li>
-              <li className="text-[15px]">Expenses of personal nature</li>
-              <li className="text-[15px]">Tips to driver, tour guide, helper, etc.</li>
-              <li className="text-[14px]">Any item which is not mentioned in “Includes”.</li>
-              <li className="text-[14px]">Extension of stay or routing like different return dates, etc.</li>
+              <li className="text-[14px]">Any Visa, Travel Insurance, etc.</li>
+              <li className="text-[14px]">Expenses of personal nature.</li>
+              <li className="text-[14px]">Tips to drivers, helpers, hotels staff, etc.</li>
+              <li className="text-[14px]">Extensions or change in routing, upgrades, etc.</li>
+              <li className="text-[14px]">Optional tours, or excursions, etc.</li>
+              <li className="text-[14px]">Any item not mentioned in includes</li>
             </ul>
           </div>
         </div>
@@ -494,7 +519,7 @@ export default function App() {
             <div>
               <h3 className="text-2xl mb-4" style={{ fontFamily: 'var(--font-serif)' }}>Sikh Channel Yatras</h3>
               <p className="text-sm opacity-80 leading-relaxed">
-                Creating meaningful spiritual journeys with reverence, authenticity, and care since our inception.
+                Creating meaningful journeys with reverence, authenticity and care.
               </p>
             </div>
 
@@ -513,9 +538,10 @@ export default function App() {
             </div>
 
             <div>
-              <h4 className="text-lg mb-4" style={{ fontFamily: 'var(--font-serif)' }}>Managed by <strong>Sparrow Path</strong></h4>
-              <div className="flex flex-col md:flex-row items-center md:items-start justify-between">
-                <img src="/sparrowpath.png" alt="Sparrow Path" className="h-10" />
+              <h4 className="text-lg mb-4" style={{ fontFamily: 'var(--font-serif)' }}>Managed & powered by</h4>
+              <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+                <img src="/sparrowpath.jpg" alt="Sparrow Path" className="h-10 w-auto object-contain" />
+                <img src="/pts.png" alt="PTS" className="h-10 w-auto object-contain" />
               </div>
             </div>
           </div>
@@ -523,30 +549,47 @@ export default function App() {
           <div className="pt-8 border-t border-white/20 space-y-6">
             {/* Logos and managed by */}
             <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
-              <div className="flex items-center gap-4">
-                <img src="/atol.png" alt="ATOL" className="h-10" />
-                <img src="/channel.png" alt="Channel" className="h-10" />
-                <img src="/pts.png" alt="PTS" className="h-10" />
+              <div className="flex flex-col md:flex-row items-center gap-14 text-[14px]">
+                
+                <p className="text-center md:text-left max-w-3xl leading-relaxed">
+                  The holidays offered on Sikhchannelyatras are a product powered and managed by Sparrow Path Ltd, a member of Protected Trust Services (PTS). All applicable bookings are protected under the ATOL 12960 licence held by Sparrow Path Ltd.
+                </p>
+
+                <div className="flex flex-col items-center gap-2 shrink-0">
+                  <h4 className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>In Association With</h4>
+                  <img
+                    src="/channel.png"
+                    alt="Sikh Channel"
+                    className="h-12 w-auto object-contain"
+                  />
+                </div>
+
               </div>
             </div>
 
             {/* ATOL protection statement */}
             <div className="bg-white/5 p-4 rounded-md text-[13px] text-white/90 leading-relaxed">
-              All the flights and flight-inclusive holidays on this website are financially protected by the ATOL scheme. When you pay you will be supplied with an ATOL Certificate. Please ask for it and check to ensure that everything you booked (flights, hotels and other services) is listed on it. Please see our booking conditions for further information or for more information about financial protection and the ATOL Certificate go to: <a href="https://www.atol.org.uk/atolcertificate" className="underline">www.atol.org.uk/atolcertificate</a>.
+              Many of the flights and flight-inclusive holidays on <a href="https://www.sikhchannelyatras.com" className="underline">www.sikhchannelyatras.com</a> are financially protected by the ATOL scheme of Sparrow Path Ltd (12960). But ATOL protection does not apply to all holiday and travel services listed on the website. Please ask us to confirm what protection may apply to your booking. If you do not receive an ATOL Certificate then the booking will not be ATOL protected. If you do receive an ATOL Certificate but all the parts of your trip are not listed on it, those parts will not be ATOL protected. Please see our booking conditions for information, or for more information about financial protection and the ATOL Certificate go to: <a href="https://www.atol.org.uk/atol" className="underline">www.atol.org.uk/atol</a> certificate.
+            </div>
+            <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div className="flex items-center">
+                <img src="/atol.png" alt="ATOL" className="h-10" />
+              </div>
+              <div className="text-center md:text-right text-[13px] text-white/80 leading-relaxed">
+                <p>© Sikh Channel Yatras. All rights reserved.</p>
+                <p>© Sparrow Path Ltd, UK. All rights reserved.</p>
+              </div>
             </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-70">
-              <p>© 2026 Sikh Channel Yatras. All rights reserved.</p>
-              <div className="flex gap-6">
-                <a href="" className="hover:opacity-100 transition-opacity">Privacy Policy</a>
-                <a href="/Terms&Conditions.pdf" className="hover:opacity-100 transition-opacity" target="_blank" rel="noopener">Terms & Conditions</a>
-              </div>
+            <div className="w-full flex justify-center items-center text-sm opacity-70">
+              <a href="/Terms&Conditions.pdf" className="hover:opacity-100 transition-opacity" target="_blank" rel="noopener noreferrer">
+                Terms & Conditions
+              </a>
             </div>
           </div>
         </div>
       </footer>
 
-      <iframe name="enquiry-submit-frame" title="Enquiry submission frame" className="hidden" />
     </div>
   );
 }
@@ -555,61 +598,150 @@ const itineraryDays = [
   {
     day: 1,
     title: "Departure from London (International Flights)",
-    description: "Board overnight flights from London Heathrow."
+    description: (<div>
+      <p>
+        Board an afternoon or evening flight from London Heathrow and settle in for your journey. This will be an overnight flight, and <strong>flights may operate on indirect routes</strong> depending on availability.
+      </p>
+    </div>)
   },
   {
     day: 2,
     title: "Arrival in Hyderabad",
-    description: "Arrival in Hyderabad. Transfer to hotel for an overnight stay. Meals: Dinner at the hotel."
+    description: (<div>
+      <p>
+        Upon arrival, and after completing customs, immigration formalities, and baggage collection, the group will be met by our <strong>representative</strong> outside the arrival terminal. The group will then be transferred to the hotel for checkin. In the evening, a <strong>briefing session</strong> will be conducted. Dinner and overnight stay will be at the hotel in Hyderabad.
+      </p><br/>
+      <p><strong>Meals:</strong> Dinner at a local restaurant or at the hotel.</p>
+    </div>)
   },
   {
     day: 3,
-    title: "Travel Hyderabad to (Hazur Sahib) via Nanak Jhira Sahib. (8 hours)",
-    description: "Travel to Bidar, Karnataka. Visit Gurdwara Sri Nanak Jhira Sahib for Darshan. Continue the journey to Nanded for a 2-night stay. Meals: Breakfast • Langar lunch at the Gurdwara • Dinner at the hotel."
+    title: "Travel Hyderabad to (Hazur Sahib) via Nanak Jhira Sahib. (Coach-320 kms/8 hrs)",
+    description: (<div>
+      <p>
+        Breakfast at the hotel. After breakfast, depart from Hyderabad and drive to Bidar, Karnataka. Visit <strong>Gurdwara Sri Nanak Jhira Sahib</strong> for Darshan, followed by Langar at the Gurdwara. Later, continue the journey to <strong> Hazur Sahib (Nanded).</strong> Upon arrival, check in at the hotel for <strong>a twonight stay.</strong>
+      </p><br/>
+      <p>Dinner and overnight stay at the hotel.</p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+    </div>)  
   },
   {
     day: 4,
     title: "In Hazur Sahib",
-    description: "Early morning visit to Gurdwara Takht Sri Hazur Sahib Ji. Later visit other significant historical Gurdwaras in Nanded, followed by Langar at one of the Gurdwaras. Meals: Breakfast • Langar lunch at the Gurdwara • Langar dinner at the Gurdwara."
+    description: (<div>
+      <p>
+        Early morning visit to Gurdwara Takht Sri Hazur Sahib Ji for Darshan. Return to the hotel for breakfast. Later in the morning, the group will proceed to visit several significant historical Gurdwaras, followed by Langar at one of the Gurdwaras.
+      </p><br/>
+      <p>The visits will include:</p><br/>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Gurdwara Sri Maltekri Sahib</li>
+        <li>Gurdwara Sri Heera Ghat Sahib</li>
+        <li>Gurdwara Sri Mata Devan Ji</li>
+        <li>Gurdwara Sri Shikar Ghat Sahib</li>
+        <li>Gurdwara Sri Nagina Ghat Sahib</li>
+        <li>Gurdwara Sri Banda Ghat Sahib</li>
+      </ul><br/>
+      <p>In the evening, visit Takht Sri Hazur Sahib once again for Darshan, followed by Langar. Overnight stay at the hotel in Nanded.</p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Langar dinner at the Gurdwara.</p>
+    </div>)
   },
   {
     day: 5,
-    title: "Travel Hazur Sahib – Hyderabad Airport (6 hours) / Fly to Patna",
-    description: "Travel to Hyderabad Hyderabad Airport and fly to Patna for 2-night stay. Meals: Breakfast • Langar Lunch at the Gurdwara • Dinner at the hotel."
+    title: "Travel Hazur Sahib – Hyderabad Airport (290 kms / 6 hours) / Fly to Patna",
+    description: (<div>
+      <p>
+        Early breakfast at the hotel. After breakfast, depart from Nanded and begin the drive to Hyderabad. En route, stop at <strong>Gurdwara Yaadgari Baba Zorawar Singh Ji Baba Fateh Singh Ji</strong> for Darshan, followed by Langar. Continue the journey to<strong> Hyderabad Airport </strong> and check in for the flight to Patna.
+      </p><br/>
+      <p>
+        Upon arrival in Patna, transfer to the hotel for checkin for a <strong>twonight stay</strong>. Dinner and overnight stay at the hotel in Patna.
+      </p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+    </div>)
   },
   {
     day: 6,
     title: "In Patna Sahib (Visit the Takht Sri Harmandir Sahib, Patna)",
-    description: "Visit Takht Sri Harmandir Sahib and other important and historic Gurdwaras. Meals: Breakfast • Langar Lunch at the Gurdwara • Dinner at the hotel."
+    description: (<div>
+      <p>
+        Begin your day with breakfast at the hotel before heading to <strong>Gurdwara Takht Sri Patna Sahib</strong> for Darshan. Later, visit several other important and historic Gurdwaras, taking in their spiritual and cultural significance.
+      </p><br/>
+      <p>The visits will include:</p><br/>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Gurdwara Bal Maini Sahib</li>
+        <li>Gurdwara Kangan Ghat</li>
+        <li>Gurdwara Guru Ka Bagh</li>
+      </ul><br/>
+      <p>Enjoy Langar lunch at one of the Gurdwaras. Return to the hotel in the evening for dinner and an overnight stay.</p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+    </div>)
   },
   {
     day: 7,
-    title: "Fly Patna to Chandigarh. (By Flight) & travel to Mohali",
-    description: "Fly Patna to Chandigarh. Transfer to hotel in Mohali for a 2-night stay. Meals: Breakfast • Light refreshments • Dinner at the hotel."
+    title: "Fly Patna to Chandigarh (By Flight)",
+    description: (<div>
+      <p>
+        Enjoy a leisurely breakfast at the hotel before taking your flight from Patna to Chandigarh. On arrival at <strong>Chandigarh Airport</strong>, proceed to Mohali and check in to your hotel for a <strong>twonight stay.</strong> Dinner and overnight stay at the hotel.
+      </p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+    </div>)   
   },
   {
     day: 8,
-    title: "In Mohali (Chandigarh) – Day trip to Anandpur Sahib (1 hour)",
-    description: "Visit, Anandpur Fort, Takht Sri Kesgarh Sahib Ji and Sis Ganj Gurdwara. Meals: Breakfast • Langar Lunch at the Gurdwara • Dinner at the hotel."
+    title: "Chandigarh – Day trip to Anandpur Sahib (40 kms / 1 hour)",
+    description: (<div>
+      <p>
+        Begin your day with an early breakfast, then set out for <strong>Sri Anandpur Sahib Ji.</strong>
+      </p><br/>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Explore the historic Anandpur Fort</li>
+        <li>Visit Gurdwara Takht Sri Kesgarh Sahib Ji</li>
+        <li>Sri Sis Ganj Gurdwara.</li>
+      </ul><br/>
+      <p>After partaking in Langar, the group will travel back to Mohali for dinner and a restful overnight stay at the hotel.</p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+    </div>)
   },
   {
     day: 9,
-    title: "Mohali – Fatehgarh Sahib - Bhatinda (5 Hrs)",
-    description: "Visit Sri Fatehgarh Sahib in Sirhind. Travel to Bhatinda for 1 night stay. Continue the journey towards Bhatinda for an overnight stay. Meals: Breakfast • Langar Lunch at the Gurdwara • Dinner at the hotel."
+    title: "Chandigarh – Fatehgarh Sahib - Bhatinda (200 kms / 5 Hrs)",
+    description: (<div>
+      <p>
+        Breakfast at the hotel before travelling to <strong>Sirhind</strong> to visit <strong>Sri Fatehgarh Sahib</strong> for Darshan. After Darshan and Langar, continue the journey towards <strong>Bhatinda</strong>. Upon arrival, check in to the hotel. Dinner and overnight stay at the hotel.
+      </p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+    </div>)   
   },
   {
     day: 10,
-    title: "Bhatinda – Talwandi Sabo - Amritsar (225 Kms / 7 Hrs)",
-    description: "Visit Gurdwara Takht Sri Damdama Sahib. Travel to Amritsar a 2-night stay. Meals: Breakfast • Langar Lunch at the Gurdwara • Dinner at the hotel."
+    title: "Bhatinda – Talwandi Sabo (35 Kms | 60 minutes) - Amritsar (225 Kms / 5 Hrs)",
+    description: (<div>
+      <p>
+        Begin your day with breakfast at the hotel before departing for <strong>Talwandi Sabo</strong>. Here, you will visit <strong>Gurdwara Takht Sri Damdama Sahib</strong>, revered as the fifth Takht of Sikhism. This historic site is where <strong>Guru Gobind Singh Ji</strong> finalised and authenticated the Adi Granth in 1706, incorporating the hymns of <strong>Guru Tegh Bahadur Ji</strong>. It is also remembered for the momentous <strong>Baisakhi of 1706</strong>, when Guru Ji prepared Amrit for nearly 1.2 lakh devotees — a tradition still honoured with deep devotion each year.
+      </p><br/>
+      <p> Following the visit, continue the journey to <strong>Amritsar</strong>, stopping en route for Darshan at <strong>Tarn Taran</strong>. On arrival, check in to your hotel for a <strong>twonight stay</strong>. Dinner and overnight stay at the hotel.
+      </p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+    </div>)  
   },
   {
     day: 11,
     title: "In Amritsar",
-    description: "Early morning visit the Sri Akal Takht Sahib ji & Sri Harmandir Sahib. Rest of the day free for own activities. Meals: Breakfast • No lunch (Free day) • Dinner at the hotel."
+    description: (<div>
+      <p>Early this morning, visit <strong>Gurdwara Sri Akal Takht Sahib Ji</strong> and witness the <strong>Palki Sewa</strong>, followed by prayers and Darshan at <strong>Sri Harmandir Sahib Ji (Golden Temple)</strong>. You will also have the opportunity to partake in Langar at the world’s largest community kitchen, where <strong>tens of thousands of people</strong> are served freshly prepared meals every day at no cost.
+      </p><br/>
+      <p> Return to your hotel for breakfast. The remainder of the day is free for guests’ own independent activities. Dinner and overnight stay at the hotel.
+      </p><br/>
+      <p><strong>Meals:</strong> Breakfast at the hotel • No lunch (free day) • Dinner at the hotel.</p>
+    </div>)  
   },
   {
     day: 12,
     title: "Departure out of Amritsar",
-    description: "Take your flights back to the UK or pre-arrange an extension of stay. Return to UK."
+    description: (<div>
+      <p>The group will be transferred to <strong>Amritsar Airport</strong> as scheduled for onward flights to the UK. Upon arrival in London, the tour comes to an end.</p><br/>
+      <p> <strong>Passengers Extending Their Stay in India:</strong> Guests planning to extend their stay in Punjab may check out of the hotel on <strong>16th October 2026 by 1100 hours</strong>. All onward departures will need to be arranged <strong>independently</strong>, unless prior arrangements have been made with us.
+      </p><br/>
+      <p><strong>End of the Services!</strong></p>
+    </div>)  
   }
 ];
