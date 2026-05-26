@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import nodemailer from 'nodemailer';
@@ -15,8 +16,29 @@ app.post('/api/enquiry', async (req, res) => {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
+  const fromName = process.env.FROM_NAME || 'Sikh Channel Yatras';
   const subject = 'Sri Panj Takht Sahib Yatra Enquiry';
-  const text = `Name: ${name}\nContact Number: ${phone || ''}\nEmail: ${email}\nMessage:\n${message || ''}`;
+  const text = [
+    'New enquiry received from the website:',
+    `Name: ${name}`,
+    `Contact Number: ${phone || 'N/A'}`,
+    `Email: ${email}`,
+    'Message:',
+    message || 'N/A',
+  ].join('\n');
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; font-size: 14px; color: #222;">
+      <h2 style="margin: 0 0 12px;">New website enquiry</h2>
+      <table cellspacing="0" cellpadding="6" style="border-collapse: collapse;">
+        <tr><td style="font-weight: bold;">Name</td><td>${name}</td></tr>
+        <tr><td style="font-weight: bold;">Contact Number</td><td>${phone || 'N/A'}</td></tr>
+        <tr><td style="font-weight: bold;">Email</td><td>${email}</td></tr>
+        <tr><td style="font-weight: bold;">Message</td><td>${message || 'N/A'}</td></tr>
+      </table>
+      <p style="margin-top: 16px; color: #666;">Sent via the Sri Panj Takht Sahib Yatra website.</p>
+    </div>
+  `;
 
   // SMTP configuration via environment variables
   const smtpHost = process.env.SMTP_HOST;
@@ -27,92 +49,58 @@ app.post('/api/enquiry', async (req, res) => {
   const toEmail = process.env.TO_EMAIL || 'shivansh@immerseindiatours.com';
 
   if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
-    console.warn('SMTP not configured. Will attempt FormSubmit fallback.');
-
-    try {
-      const formSubmitResp = await fetch('https://formsubmit.co/ajax/shivansh@immerseindiatours.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          _subject: subject,
-          _captcha: 'false',
-          _template: 'table',
-          name,
-          phone,
-          email,
-          message,
-        }),
-      });
-
-      const formText = await formSubmitResp.text();
-      if (!formSubmitResp.ok) {
-        console.error('FormSubmit error status', formSubmitResp.status, 'body', formText);
-        return res.status(500).json({ error: 'Failed to send email', provider: 'formsubmit', details: formText });
-      }
-
-      console.log('FormSubmit response:', formText);
-      return res.json({ ok: true, provider: 'formsubmit', details: formText });
-    } catch (formSubmitErr) {
-      console.error('FormSubmit fallback failed', formSubmitErr);
-      return res.status(500).json({ error: 'Mail server not configured and FormSubmit fallback failed' });
-    }
+    console.warn('SMTP not configured. Set SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS.');
+    return res.status(500).json({ error: 'Mail server not configured' });
   }
 
   try {
+    const smtpPortNumber = Number(smtpPort);
+    const secure = smtpPortNumber === 465; // true for 465 (SSL), false for 587 (TLS)
+
     const transporter = nodemailer.createTransport({
       host: smtpHost,
-      port: Number(smtpPort),
-      secure: Number(smtpPort) === 465, // true for 465, false for other ports
+      port: smtpPortNumber,
+      secure,
+      requireTLS: !secure,
       auth: {
         user: smtpUser,
         pass: smtpPass,
       },
+      tls: {
+        servername: smtpHost,
+      },
     });
 
-    await transporter.sendMail({
-      from: fromEmail,
+    await transporter.verify();
+
+    const info = await transporter.sendMail({
+      from: `${fromName} <${fromEmail}>`,
       to: toEmail,
       subject,
       text,
+      html,
+      headers: {
+        'X-Source': 'Website enquiry',
+      },
+      envelope: {
+        from: fromEmail,
+        to: toEmail,
+      },
     });
+
+    console.log('Email sent', { messageId: info.messageId, response: info.response });
 
     return res.json({ ok: true });
   } catch (err) {
-    console.error('SMTP error, falling back to FormSubmit', err);
-
-    try {
-      const formSubmitResp = await fetch('https://formsubmit.co/ajax/shivansh@immerseindiatours.com', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          _subject: subject,
-          _captcha: 'false',
-          _template: 'table',
-          name,
-          phone,
-          email,
-          message,
-        }),
-      });
-
-      const formText = await formSubmitResp.text();
-      if (!formSubmitResp.ok) {
-        console.error('FormSubmit error status', formSubmitResp.status, 'body', formText);
-        return res.status(500).json({ error: 'Failed to send email', provider: 'formsubmit', details: formText });
-      }
-
-      console.log('FormSubmit response:', formText);
-      return res.json({ ok: true, provider: 'formsubmit', details: formText });
-    } catch (formSubmitErr) {
-      console.error('FormSubmit fallback failed', formSubmitErr);
-      return res.status(500).json({ error: 'Failed to send email' });
-    }
+    const errObj = err instanceof Error ? err : new Error(String(err));
+    const details = {
+      message: errObj.message,
+      code: errObj.code,
+      command: errObj.command,
+      response: errObj.response,
+    };
+    console.error('SMTP error', details);
+    return res.status(500).json({ error: 'Failed to send email', details });
   }
 });
 

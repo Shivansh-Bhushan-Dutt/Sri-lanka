@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, Phone, Coffee, Sparkles, CreditCard, Compass, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
+import { Phone, Coffee, Sparkles, Handshake, Compass, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function App() {
   const [openDay, setOpenDay] = useState<number | null>(1);
@@ -99,29 +99,48 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
       {/* Sticky Side Buttons */}
-      <div className="fixed right-1 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3">
-        <button
-          onClick={() => scrollToSection('enquiry')}
-          className="px-6 py-2 bg-[#C9A961] text-[#1A1A1A] hover:bg-[#D4A574] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-sm"
+      <div className="fixed right-3 bottom-6 md:right-1 md:top-1/2 md:bottom-auto md:-translate-y-1/2 z-40 flex flex-col gap-2 md:gap-3">
+        <a
+          href="#enquiry"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToSection("enquiry");
+          }}
+          className="px-4 py-2 md:px-6 md:py-2 bg-[#C9A961] text-[#1A1A1A] hover:bg-[#D4A574] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-xs md:text-sm cursor-pointer"
         >
           Book Now
-        </button>
-        <button
-          onClick={downloadItineraryPDF}
-          className="px-6 py-2 bg-[#1E3A5F] text-white hover:bg-[#2A4A6F] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-sm"
-        >Download Itinerary
-        </button>
+        </a>
+
+        <a
+          href="#download-itinerary"
+          onClick={(e) => {
+            e.preventDefault();
+            downloadItineraryPDF();
+          }}
+          className="px-4 py-2 md:px-6 md:py-2 bg-[#1E3A5F] text-white hover:bg-[#2A4A6F] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-xs md:text-sm cursor-pointer"
+        >
+          Download Itinerary
+        </a>
+
+        <a
+          href="/Terms&Conditions.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-4 py-2 md:px-6 md:py-2 bg-[#C9A961] text-[#1A1A1A] hover:bg-[#D4A574] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-xs md:text-sm cursor-pointer"
+        >
+          Terms & Conditions
+        </a>
       </div>
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[#D4A574]/20">
-        <div className="max-w-7xl mx-auto px-6 h-[80px] flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-[64px] md:h-[80px] flex items-center justify-between">
           {/* Logo */}
           <div className="h-full flex items-center">
             <img
               src="/Ptakht.png"
               alt="Takht Sahib"
-              className="h-full w-auto object-contain"
+              className="h-10 md:h-full w-auto object-contain"
             />
           </div>
 
@@ -136,18 +155,22 @@ export default function App() {
           </nav>
 
           {/* Book Now Button */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3 md:gap-4">
             <a href="tel:02039095800"
-              className="flex items-center gap-2 text-[#1A1A1A] transition-colors font-medium text-lg tracking-wide" >
-              <Phone className="w-5 h-5" />
+              className="flex items-center gap-2 text-[#1A1A1A] transition-colors font-medium text-[13px] sm:text-sm md:text-lg tracking-wide" >
+              <Phone className="w-4 h-4 md:w-5 md:h-5" />
               <span>0203 909 5800</span>
             </a>
-            <button
-              onClick={() => scrollToSection('enquiry')}
-              className="px-6 py-2 bg-[#C9A961] text-[#1A1A1A] hover:bg-[#D4A574] transition-all duration-300 tracking-wide"
+            <a
+              href="#enquiry"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection("enquiry");
+              }}
+              className="px-3 py-1.5 md:px-6 md:py-2 bg-[#C9A961] text-[#1A1A1A] hover:bg-[#D4A574] transition-all duration-300 tracking-wide cursor-pointer inline-flex items-center justify-center text-xs md:text-sm"
             >
               Book Now
-            </button>
+            </a>
           </div>
         </div>
       </header> 
@@ -164,13 +187,13 @@ export default function App() {
         </div>
 
         <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto mb-13">
-          <h1 className="mb-6 tracking-wide text-[64px]" style={{ fontFamily: 'var(--font-serif)' }}>
+          <h1 className="mb-6 tracking-wide text-[36px] sm:text-[48px] md:text-[64px]" style={{ fontFamily: 'var(--font-serif)' }}>
             Sri Panj Takht Sahib Yatra
           </h1>
-          <p className="text-2xl md:text-3xl font-light tracking-wide mx-[0px] mt-[0px] mb-[10px]" style={{ fontFamily: 'var(--font-serif)' }}>
+          <p className="text-lg sm:text-2xl md:text-3xl font-light tracking-wide mx-[0px] mt-[0px] mb-[10px]" style={{ fontFamily: 'var(--font-serif)' }}>
             12 Days Sacred Journey of a Lifetime
           </p>
-          <p className="text-lg mb-12 tracking-widest opacity-90" style={{ fontFamily: 'var(--font-sans)' }}>(05 – 16 October 2026)</p>
+          <p className="text-sm sm:text-lg mb-10 sm:mb-12 tracking-widest opacity-90" style={{ fontFamily: 'var(--font-sans)' }}>(05 – 16 October 2026)</p>
 
           <div className="max-w-2xl mx-auto mb-12">
             
@@ -181,25 +204,25 @@ export default function App() {
       {/* Highlights Section with Icons */}
       <section className="py-16 px-6 bg-white">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="relative text-center bg-[#FAF7F2] border border-[#C9A961]/40 rounded-2xl px-5 py-8 shadow-[0_12px_35px_rgba(201,169,97,0.18)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="text-center sm:col-span-2 md:col-span-1">
+              <div className="relative text-center bg-[#FAF7F2] border border-[#C9A961]/40 rounded-2xl px-4 py-6 sm:px-5 sm:py-8 shadow-[0_12px_35px_rgba(201,169,97,0.18)]">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C9A961] text-[#1A1A1A] px-4 py-1 text-[11px] uppercase tracking-[0.18em] font-medium">
                   Limited Offer
                 </div>
 
-                <div className="w-16 h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center">
-                  <CreditCard className="w-8 h-8 text-[#C9A961]" />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center">
+                  <Sparkles className="w-8 h-8 text-[#C9A961]" />
                 </div>
 
                 <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">
-                  Early Bird Offer
+                  <strong> Early Bird Offer</strong>
                 </p>
 
                 <div className="flex items-baseline justify-center gap-3">
-                  <span className="text-base text-[#9A8F7E] line-through">£2350</span>
+                  <span className="text-sm sm:text-base text-[#9A8F7E] line-through">£2350</span>
                   <span
-                    className="text-4xl text-[#1A1A1A]"
+                    className="text-3xl sm:text-4xl text-[#1A1A1A]"
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
                     £2250<span className="text-sm"> pp</span>
@@ -213,7 +236,7 @@ export default function App() {
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
-                <Sparkles className="w-8 h-8 text-[#C9A961]" />
+                <Handshake className="w-8 h-8 text-[#C9A961]" />
               </div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Experience</p>
               <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Spiritual Journey</p>
@@ -363,7 +386,7 @@ export default function App() {
                 className="w-full h-[240px] object-cover rounded-md"
               />
 
-              <p className="mt-3 text-[15px] text-[#6B5D4F] tracking-wide leading-snug" style={{ fontFamily: "var(--font-serif)" }} > {item.title} </p>
+              <p className="mt-1 text-[12px] text-[#6B5D4F] tracking-wide leading-snug" > {item.title} </p>
             </div>
           ))}
         </div>
@@ -526,21 +549,18 @@ export default function App() {
             <div>
               <h4 className="text-lg mb-4" style={{ fontFamily: 'var(--font-serif)' }}>Contact</h4>
               <div className="space-y-2 text-lg opacity-80">
-                <p className="flex items-center gap-2">
+                <a href="tel:02039095800"
+                  className="flex items-center gap-2 transition-colors font-medium text-lg tracking-wide hover:opacity-100" >
                   <Phone className="w-6 h-6" />
-                  0203 909 5800
-                </p>
-                {/* <p className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  info@sikhchannelyatras.com
-                </p> */}
+                  <span>0203 909 5800</span>
+                </a>
               </div>
             </div>
 
             <div>
               <h4 className="text-lg mb-4" style={{ fontFamily: 'var(--font-serif)' }}>Managed & powered by</h4>
-              <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-                <img src="/sparrowpath.jpg" alt="Sparrow Path" className="h-10 w-auto object-contain" />
+              <div className="flex flex-row flex-wrap items-center gap-4 md:gap-6">
+                <img src="/sparrowpath.png" alt="Sparrow Path" className="h-10 w-auto object-contain rounded-md" />
                 <img src="/pts.png" alt="PTS" className="h-10 w-auto object-contain" />
               </div>
             </div>
@@ -552,15 +572,15 @@ export default function App() {
               <div className="flex flex-col md:flex-row items-center gap-14 text-[14px]">
                 
                 <p className="text-center md:text-left max-w-3xl leading-relaxed">
-                  The holidays offered on Sikhchannelyatras are a product powered and managed by Sparrow Path Ltd, a member of Protected Trust Services (PTS). All applicable bookings are protected under the ATOL 12960 licence held by Sparrow Path Ltd.
+                  The holidays offered on SikhChannelYatras are a product powered and managed by Sparrow Path Ltd UK, a member of Protected Trust Services (PTS). All applicable bookings are protected under the ATOL 12960 licence held by Sparrow Path Ltd.
                 </p>
 
                 <div className="flex flex-col items-center gap-2 shrink-0">
                   <h4 className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>In Association With</h4>
                   <img
-                    src="/channel.png"
+                    src="/channel.jpg"
                     alt="Sikh Channel"
-                    className="h-12 w-auto object-contain"
+                    className="h-12 w-auto object-contain rounded-md"
                   />
                 </div>
 
@@ -568,24 +588,60 @@ export default function App() {
             </div>
 
             {/* ATOL protection statement */}
-            <div className="bg-white/5 p-4 rounded-md text-[13px] text-white/90 leading-relaxed">
-              Many of the flights and flight-inclusive holidays on <a href="https://www.sikhchannelyatras.com" className="underline">www.sikhchannelyatras.com</a> are financially protected by the ATOL scheme of Sparrow Path Ltd (12960). But ATOL protection does not apply to all holiday and travel services listed on the website. Please ask us to confirm what protection may apply to your booking. If you do not receive an ATOL Certificate then the booking will not be ATOL protected. If you do receive an ATOL Certificate but all the parts of your trip are not listed on it, those parts will not be ATOL protected. Please see our booking conditions for information, or for more information about financial protection and the ATOL Certificate go to: <a href="https://www.atol.org.uk/atol" className="underline">www.atol.org.uk/atol</a> certificate.
-            </div>
-            <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="flex items-center">
-                <img src="/atol.png" alt="ATOL" className="h-10" />
-              </div>
-              <div className="text-center md:text-right text-[13px] text-white/80 leading-relaxed">
-                <p>© Sikh Channel Yatras. All rights reserved.</p>
-                <p>© Sparrow Path Ltd, UK. All rights reserved.</p>
-              </div>
-            </div>
+          <div className="bg-white/5 p-4 rounded-md text-[13px] text-white/90 leading-relaxed">
+            <div className="flex flex-col md:flex-row gap-5 items-center">
+              <img
+                src="/atol.png"
+                alt="ATOL"
+                className="h-16 md:h-20 w-auto shrink-0"
+              />
 
-            <div className="w-full flex justify-center items-center text-sm opacity-70">
-              <a href="/Terms&Conditions.pdf" className="hover:opacity-100 transition-opacity" target="_blank" rel="noopener noreferrer">
-                Terms & Conditions
-              </a>
+              <p>
+                Many of the flights and flight-inclusive holidays on{" "}
+                <a
+                  href="https://www.sikhchannelyatras.com"
+                  className="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  www.sikhchannelyatras.com
+                </a>{" "}
+                are financially protected by the ATOL scheme of Sparrow Path Ltd (12960).
+                But ATOL protection does not apply to all holiday and travel services
+                listed on the website. Please ask us to confirm what protection may apply
+                to your booking. If you do not receive an ATOL Certificate then the booking
+                will not be ATOL protected. If you do receive an ATOL Certificate but all
+                the parts of your trip are not listed on it, those parts will not be ATOL
+                protected. Please see our booking conditions for information, or for more
+                information about financial protection and the ATOL Certificate go to:{" "}
+                <a
+                  href="https://www.atol.org.uk/atolcertificate"
+                  className="hover:text-white transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  www.atol.org.uk/atolcertificate.
+                </a>{" "}
+              </p>
             </div>
+          </div>
+
+          <div className="mt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-center md:text-left text-[13px] text-white/80 leading-relaxed">
+            <p>© Sikh Channel Yatras. 2026. All rights reserved.</p>
+            <span className="hidden md:inline text-white/40">|</span>
+            <p>© Sparrow Path Ltd, UK. 2026. All rights reserved.</p>
+          </div>
+
+            <a
+              href="/Terms&Conditions.pdf"
+              className="text-sm opacity-70 hover:opacity-100 transition-opacity"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Terms & Conditions
+            </a>
+          </div>
           </div>
         </div>
       </footer>
