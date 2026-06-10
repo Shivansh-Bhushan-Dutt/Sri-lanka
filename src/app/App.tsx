@@ -356,7 +356,7 @@ export default function App() {
                 </div>
 
                 <p className="text-sm text-[#6B5D4F] mt-2">
-                  Valid Till 15th June
+                  Valid Till 15th November
                 </p>
               </div>
             </div>
@@ -365,7 +365,7 @@ export default function App() {
                 <Handshake className="w-8 h-8 text-[#2B5954]" />
               </div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Experience</p>
-              <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Spiritual Journey</p>
+              <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Cultural Journey</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
