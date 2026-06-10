@@ -1,8 +1,89 @@
-import { useState } from 'react';
-import { Phone, Coffee, Sparkles, Handshake, Compass, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Phone, Coffee, Sparkles, Handshake, Compass, MapPin, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const heroSlides = [
+  {
+    image: "/southern_coast.jpg",
+    title: "Wonders of Sri Lanka ",
+    subtitle: "the Golden Beaches",
+    date: "(05 - 16 November 2026)",
+  },
+  {
+    image: "/sri_lanka.jpg",
+    title: "Sri Lanka",
+    subtitle: "Journey of a Lifetime",
+    date: "(05 - 16 November 2026)",
+  },
+  {
+    image: "/pinnawala.jpg",
+    title: "Pinnawala",
+    subtitle: "the Island of Ancient Kingdoms",
+    date: "Elephant Orphanage experience",
+  },
+  {
+    image: "/sigiriya.jpg",
+    title: "Sigiriya",
+    subtitle: "Begin with Misty Hills",
+    date: "Lanka",
+  },
+];
+
+const highlightSlides = [
+  {
+    image: "/colombo.jpg",
+    tag: "Colombo",
+    title: "Colonial charm, seaside boulevards & vibrant markets",
+    description:
+      "Spend meaningful time in Colombo, with guided visits to nearby historic places.",
+  },
+  {
+    image: "/pinnawala.jpg",
+    tag: "Pinnawala",
+    title: "Elephant Orphanage experience",
+    description:
+      "Visit continue to revered sites.",
+  },
+  {
+    image: "/sigiriya.jpg",
+    tag: "Sigiriya",
+    title: "The iconic 5th century Rock Fortress",
+    description:
+      "Travel guided with context and a carefully paced group itinerary.",
+  },
+  {
+    image: "/dambulla.jpg",
+    tag: "Dambulla",
+    title: "Ancient cave temples filled with murals & statues",
+    description:
+      "Continue through completing a powerful route.",
+  },
+  {
+    image: "/kandy.jpg",
+    tag: "Kandy",
+    title: "Cultural capital & home of the Sacred Tooth Relic",
+    description:
+      "Continue through completing a powerful route.",
+  },
+  {
+    image: "/nuwara_eliya.jpg",
+    tag: "Nuwara Eliya",
+    title: "Tea Gardens & scenic drives",
+    description:
+      "Continue through completing a powerful route.",
+  },
+  {
+    image: "/southern_coast (2).jpg",
+    tag: "Southern Coast",
+    title: "Golden beaches & tropical relaxation",
+    description:
+      "Continue through completing a powerful route.",
+  },
+];
 
 export default function App() {
   const [openDay, setOpenDay] = useState<number | null>(1);
+  const [heroIndex, setHeroIndex] = useState(0);
+  const [highlightIndex, setHighlightIndex] = useState(0);
 
   // Enquiry form state
   const [enquiryName, setEnquiryName] = useState('');
@@ -30,7 +111,7 @@ export default function App() {
     }
 
     const submitViaApi = async () => {
-      const endpoint = "/api/enquiry";
+      const endpoint = "/enquiry.php";
 
       const resp = await fetch(endpoint, {
         method: 'POST',
@@ -91,6 +172,33 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    const heroTimer = window.setInterval(() => {
+      setHeroIndex((current) => (current + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => window.clearInterval(heroTimer);
+  }, []);
+
+  useEffect(() => {
+    const highlightTimer = window.setInterval(() => {
+      setHighlightIndex((current) => (current + 1) % highlightSlides.length);
+    }, 5000);
+
+    return () => window.clearInterval(highlightTimer);
+  }, []);
+
+  const goToHeroSlide = (index: number) => {
+    setHeroIndex((index + heroSlides.length) % heroSlides.length);
+  };
+
+  const goToHighlightSlide = (index: number) => {
+    setHighlightIndex((index + highlightSlides.length) % highlightSlides.length);
+  };
+
+  const activeHeroSlide = heroSlides[heroIndex];
+  const activeHighlightSlide = highlightSlides[highlightIndex];
+
   return (
     <div className="min-h-screen bg-[#FAF7F2]">
       {/* Sticky Side Buttons */}
@@ -112,18 +220,9 @@ export default function App() {
             e.preventDefault();
             downloadItineraryPDF();
           }}
-          className="px-4 py-2 md:px-6 md:py-2 bg-[#1E3A5F] text-white hover:bg-[#2A4A6F] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-xs md:text-sm cursor-pointer"
+          className="px-4 py-2 md:px-6 md:py-2 bg-[#2B5954] text-white hover:bg-[#1F4440] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-xs md:text-sm cursor-pointer"
         >
           Download Itinerary
-        </a>
-
-        <a
-          href="/Terms&Conditions.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-4 py-2 md:px-6 md:py-2 bg-[#C9A961] text-[#1A1A1A] hover:bg-[#D4A574] transition-all duration-300 tracking-wide shadow-md flex items-center gap-2 whitespace-nowrap rounded-sm text-xs md:text-sm cursor-pointer"
-        >
-          Terms & Conditions
         </a>
       </div>
 
@@ -171,27 +270,59 @@ export default function App() {
       </header> 
 
       {/* Hero Section */}
-      <section className="relative h-screen flex items-end justify-center overflow-hidden mt-16">
+      <section className="hero-slider relative h-[calc(100vh-64px)] md:h-screen min-h-[620px] flex items-end justify-center overflow-hidden mt-16 md:mt-20">
         <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1764782884713-08c039f92e71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=2000"
-            alt="Golden Temple"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
+          {heroSlides.map((slide, index) => (
+            <div
+              key={slide.title}
+              className={`hero-slide absolute inset-0 ${index === heroIndex ? "is-active" : ""}`}
+            >
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="hero-slide-image w-full h-full object-cover"
+              />
+            </div>
+          ))}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#061513]/45 via-[#061513]/20 to-[#061513]/70" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_78%,rgba(201,169,97,0.18),transparent_34%)]" />
         </div>
 
-        <div className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto mb-13">
-          <h1 className="mb-6 tracking-wide text-[36px] sm:text-[48px] md:text-[64px]" style={{ fontFamily: 'var(--font-serif)' }}>
-            Sri Panj Takht Sahib Yatra
-          </h1>
-          <p className="text-lg sm:text-2xl md:text-3xl font-light tracking-wide mx-[0px] mt-[0px] mb-[10px]" style={{ fontFamily: 'var(--font-serif)' }}>
-            12 Days Sacred Journey of a Lifetime
-          </p>
-          <p className="text-sm sm:text-lg mb-10 sm:mb-12 tracking-widest opacity-90" style={{ fontFamily: 'var(--font-sans)' }}>(05 – 16 October 2026)</p>
+        <button
+          type="button"
+          onClick={() => goToHeroSlide(heroIndex - 1)}
+          className="absolute left-4 md:left-8 top-1/2 z-20 -translate-y-1/2 h-11 w-11 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-sm border border-white/25 flex items-center justify-center transition-all"
+          aria-label="Previous banner slide"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <button
+          type="button"
+          onClick={() => goToHeroSlide(heroIndex + 1)}
+          className="absolute right-4 md:right-8 top-1/2 z-20 -translate-y-1/2 h-11 w-11 rounded-full bg-white/15 hover:bg-white/25 text-white backdrop-blur-sm border border-white/25 flex items-center justify-center transition-all"
+          aria-label="Next banner slide"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
 
-          <div className="max-w-2xl mx-auto mb-12">
-            
+        <div key={activeHeroSlide.title} className="hero-copy relative z-10 text-center text-white px-6 max-w-5xl mx-auto mb-16 md:mb-20">
+          <h1 className="mb-5 tracking-wide text-[38px] leading-[1.08] sm:text-[52px] md:text-[72px]" style={{ fontFamily: 'var(--font-serif)' }}>
+            {activeHeroSlide.title}
+          </h1>
+          <p className="hero-copy-delay-1 text-lg sm:text-2xl md:text-3xl font-light tracking-wide mx-[0px] mt-[0px] mb-[10px]" style={{ fontFamily: 'var(--font-serif)' }}>
+            {activeHeroSlide.subtitle}
+          </p>
+          <p className="hero-copy-delay-2 text-sm sm:text-lg mb-8 sm:mb-10 tracking-widest opacity-90" style={{ fontFamily: 'var(--font-sans)' }}>{activeHeroSlide.date}</p>
+          <div className="hero-progress mx-auto flex items-center justify-center gap-2">
+            {heroSlides.map((slide, index) => (
+              <button
+                key={slide.title}
+                type="button"
+                onClick={() => goToHeroSlide(index)}
+                className={`h-[3px] rounded-full transition-all duration-500 ${index === heroIndex ? "w-14 bg-[#C9A961]" : "w-8 bg-white/55 hover:bg-white"}`}
+                aria-label={`Show banner slide ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -201,13 +332,13 @@ export default function App() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             <div className="text-center sm:col-span-2 md:col-span-1">
-              <div className="relative text-center bg-[#FAF7F2] border border-[#C9A961]/40 rounded-2xl px-4 py-6 sm:px-5 sm:py-8 shadow-[0_12px_35px_rgba(201,169,97,0.18)]">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C9A961] text-[#1A1A1A] px-4 py-1 text-[11px] uppercase tracking-[0.18em] font-medium">
+              <div className="relative text-center bg-[#FAF7F2] border border-[#2B5954]/40 rounded-2xl px-4 py-6 sm:px-5 sm:py-8 shadow-[0_12px_35px_rgba(201,169,97,0.18)]">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#2B5954] text-[#ffffff] px-4 py-1 text-[11px] uppercase tracking-[0.18em] font-medium">
                   Limited Offer
                 </div>
 
                 <div className="w-14 h-14 sm:w-16 sm:h-16 mx-auto mb-4 bg-white rounded-full flex items-center justify-center">
-                  <Sparkles className="w-8 h-8 text-[#C9A961]" />
+                  <Sparkles className="w-8 h-8 text-[#2B5954]" />
                 </div>
 
                 <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">
@@ -231,21 +362,21 @@ export default function App() {
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
-                <Handshake className="w-8 h-8 text-[#C9A961]" />
+                <Handshake className="w-8 h-8 text-[#2B5954]" />
               </div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Experience</p>
               <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Spiritual Journey</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
-                <Compass className="w-8 h-8 text-[#C9A961]" />
+                <Compass className="w-8 h-8 text-[#2B5954]" />
               </div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Guided Yatra</p>
               <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Expert-led visits</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
-                <Coffee className="w-8 h-8 text-[#C9A961]" />
+                <Coffee className="w-8 h-8 text-[#2B5954]" />
               </div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Meals & Stay</p>
               <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Comfort & all Meals</p>
@@ -261,21 +392,18 @@ export default function App() {
 
           <div className="space-y-8 text-lg leading-relaxed text-[#3A3A3A]">
             <p className="text-[15px]">
-              The <strong>Sri Panj Takht Sahib Yatra</strong> is a sacred pilgrimage that covers the Five Takhts—the highest seats of spiritual and temporal authority in Sikhism. These revered Gurudwaras serve as guiding pillars for the Sikh community, preserving tradition, offering spiritual direction, and commemorating defining moments in Sikh history.
+              Discover the Island of Ancient Kingdoms, Sacred Temples, Misty Hills & the Golden Beaches.
             </p>
-             <div className="grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-x-10 gap-y-1 max-w-[820px] mx-auto text-left text-[15px] leading-[1.6]">
-                <p><strong>Takht Sachkhand Sri Hazur Abchalnagar Sahib,</strong> Nanded</p>
-                <p><strong>Takht Sri Harimandir Ji,</strong> Patna Sahib</p>
-
-                <p><strong>Takht Sri Kesgarh Sahib,</strong> Anandpur Sahib</p>
-                <p><strong>Takht Sri Damdama Sahib,</strong> Talwandi Sabo</p>
-
-                <p><strong>Sri Akal Takht Sahib,</strong> Amritsar</p>
-              </div>
             <p className="text-[15px]">
-              This pilgrimage also offers the opportunity to explore other historically significant Gurudwaras, and sacred sites located around these major centers of worship, enriching the spiritual and cultural experience even further.
+            Sri Lanka — <strong>the Wonder of Asia</strong> — invites you on a journey through its timeless heritage, breathtaking landscapes, and warm island hospitality. From the cultural treasures of the ancient capitals to the serenity of tea covered highlands, from vibrant Colombo to the wildlife of Yala and the sun kissed southern coast, this tour captures the very essence of Ceylon.</p>
+            <p className="text-[15px]">
+            Experience a land where history rises from stone, nature thrives in abundance, and every moment feels like a postcard.</p>
+            <p className="text-[15px]">
+              A Journey of Culture, Nature & Serenity Awaits.</p>
+            <p className="text-[15px]">
+              Let Sri Lanka’s beauty unfold before you — from ancient wonders to lush highlands, from wildlife encounters to tranquil beaches. Your unforgettable island adventure begins here.
             </p>
-            <p><strong> Waheguruji ka Khalsa! Waheguruji ki Fateh! </strong></p>
+            <p><strong> Let's go! </strong></p>
           </div>
         </div>
       </section>
@@ -286,25 +414,92 @@ export default function App() {
           <h2 className="text-4xl md:text-5xl mb-8" style={{ fontFamily: 'var(--font-serif)' }}>Program Routing</h2>
 
           <p className="mb-12 text-[#6B5D4F] leading-relaxed text-[20px]">
-            London – Hyderabad – Nanded – Patna – Chandigarh – Anandpur Sahib – Talwandi Sabo – Amritsar
+            UK Airport → Colombo → Pinnawala → Sigiriya → Dambulla → Spice Village Matale →Kandy → Nuwara Eliya → Southern Coast Beach → Colombo →UK Airport
           </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-[#D4A574]/30">
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Duration</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>11 Nights / 12 Days</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>8 Nights / 9 Days</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Departure</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>05 October 2026</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>05 November 2026</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Package price</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £ 2350 pp</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £ 2395 pp</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Reservation</p>
               <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>0203 909 5800</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Rotating Highlights Feature */}
+      <section className="py-20 px-4 sm:px-6 bg-white">
+        <div className="highlight-carousel max-w-7xl mx-auto rounded-md bg-[#2B5954] px-5 py-8 sm:px-8 md:px-12 md:py-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-8 lg:gap-12 items-center">
+            <div className="highlight-media relative overflow-hidden rounded-md bg-[#ffffff]/10">
+              {highlightSlides.map((slide, index) => (
+                <img
+                  key={slide.title}
+                  src={slide.image}
+                  alt={slide.title}
+                  className={`highlight-image absolute inset-0 w-full h-full object-cover ${index === highlightIndex ? "is-active" : ""}`}
+                />
+              ))}
+            </div>
+
+            <div className="min-h-[420px] flex flex-col justify-center">
+              <div className="mb-8 flex gap-2">
+                {highlightSlides.map((slide, index) => (
+                  <button
+                    key={slide.title}
+                    type="button"
+                    onClick={() => goToHighlightSlide(index)}
+                    className={`h-1 rounded-full transition-all duration-500 ${index === highlightIndex ? "w-14 bg-[#ffffff]" : "w-12 bg-[#ffffff]/25 hover:bg-[#ffffff]/60"}`}
+                    aria-label={`Show trip highlight ${index + 1}`}
+                  />
+                ))}
+              </div>
+
+              <h2 className="mb-7 text-4xl md:text-5xl text-[#ffffff]" style={{ fontFamily: 'var(--font-serif)' }}>
+                Highlights of trip
+              </h2>
+
+              <div key={activeHighlightSlide.title} className="highlight-copy">
+                <span className="inline-flex rounded-md bg-[#010101] px-4 py-2 text-sm font-semibold text-white mb-7">
+                  {activeHighlightSlide.tag}
+                </span>
+                <h3 className="text-2xl md:text-3xl mb-4 text-[#ffffff]" style={{ fontFamily: 'var(--font-sans)' }}>
+                  {activeHighlightSlide.title}
+                </h3>
+                <p className="text-base md:text-lg leading-relaxed text-[#ffffff] max-w-2xl">
+                  {activeHighlightSlide.description}
+                </p>
+              </div>
+
+              <div className="mt-10 flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => goToHighlightSlide(highlightIndex - 1)}
+                  className="h-11 w-11 rounded-full bg-[#101010] text-white hover:bg-[#2B5954] flex items-center justify-center transition-colors"
+                  aria-label="Previous trip highlight"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => goToHighlightSlide(highlightIndex + 1)}
+                  className="h-11 w-11 rounded-full bg-[#101010] text-white hover:bg-[#2B5954] flex items-center justify-center transition-colors"
+                  aria-label="Next trip highlight"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -317,13 +512,13 @@ export default function App() {
 
           <div className="space-y-4">
             {itineraryDays.map((day) => (
-              <div key={day.day} className="border-l-4 border-[#C9A961]">
+              <div key={day.day} className="border-l-4 border-[#2B5954]">
                 <button
                   onClick={() => toggleDay(day.day)}
                   className="w-full text-left px-8 py-6 bg-white hover:bg-[#FAF7F2] transition-colors flex items-center justify-between gap-4"
                 >
                   <div className="flex items-center gap-4">
-                    <MapPin className="w-6 h-6 text-[#C9A961] flex-shrink-0" />
+                    <MapPin className="w-6 h-6 text-[#2B5954] flex-shrink-0" />
                     <div>
                       <p className="text-sm text-[#6B5D4F] mb-1">Day {day.day}</p>
                       <h3 className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>
@@ -332,9 +527,9 @@ export default function App() {
                     </div>
                   </div>
                   {openDay === day.day ? (
-                    <ChevronUp className="w-6 h-6 text-[#C9A961] flex-shrink-0" />
+                    <ChevronUp className="w-6 h-6 text-[#2B5954] flex-shrink-0" />
                   ) : (
-                    <ChevronDown className="w-6 h-6 text-[#C9A961] flex-shrink-0" />
+                    <ChevronDown className="w-6 h-6 text-[#2B5954] flex-shrink-0" />
                   )}
                 </button>
 
@@ -354,34 +549,29 @@ export default function App() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 px-4">
           {[
             {
-              src: "/1.png",
-              title: "Sri Harmandir Sahib, Patna",
+              src: "/sri_lanka.jpg",
             },
             {
-              src: "/2.png",
-              title: "Sri Hazur Sahib, Nanded",
+              src: "/kandy.jpg",
             },
             {
-              src: "/3.png",
-              title: "Sri Kesgarh Sahib, Anandpur Sahib",
+              src: "/southern_coast.jpg",
             },
             {
-              src: "/4.png",
-              title: "Sri Akal Takht Sahib, Amritsar",
+              src: "/dambulla.jpg",
             },
             {
-              src: "/5.png",
-              title: "Sri Damdama Sahib, Talwandi Sabo",
+              src: "/nuwara_eliya.jpg",
             },
           ].map((item, index) => (
             <div key={index} className="text-center">
               <img
                 src={item.src}
-                alt={item.title}
+                // alt={item.title}
                 className="w-full h-[240px] object-cover rounded-md"
               />
 
-              <p className="mt-1 text-[12px] text-[#6B5D4F] tracking-wide leading-snug" > {item.title} </p>
+              {/* <p className="mt-1 text-[12px] text-[#6B5D4F] tracking-wide leading-snug" > {item.title} </p> */}
             </div>
           ))}
         </div>
@@ -405,7 +595,7 @@ export default function App() {
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Accommodation</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[14px]">10 nights quality hotels</li>
+                <li className="text-[14px]">8 nights quality hotels</li>
                 <li className="text-[14px]">Twin/double rooms</li>
                 <li className="text-[14px]">Daily housekeeping</li>
                 <li className="text-[14px]">Modern amenities</li>
@@ -444,11 +634,11 @@ export default function App() {
             <h2 className="text-3xl mb-8" style={{ fontFamily: 'var(--font-serif)' }}>Your Journey Excludes</h2>
             <ul className="grid md:grid-cols-3 gap-4 text-[#3A3A3A]">
               <li className="text-[14px]">Any Visa, Travel Insurance, etc.</li>
-              <li className="text-[14px]">Expenses of personal nature.</li>
-              <li className="text-[14px]">Tips to drivers, helpers, hotels staff, etc.</li>
-              <li className="text-[14px]">Extensions or change in routing, upgrades, etc.</li>
-              <li className="text-[14px]">Optional tours, or excursions, etc.</li>
-              <li className="text-[14px]">Any item not mentioned in includes</li>
+              <li className="text-[14px]">Any additional entrance fees not listed.</li>
+              <li className="text-[14px]">Beverages, snacks, and meals not mentioned.</li>
+              <li className="text-[14px]">Personal expenses (laundry, phone calls, etc.)</li>
+              <li className="text-[14px]">Tips for guide, driver, and hotel staff</li>
+              <li className="text-[14px]">Any services not specified in the itinerary</li>
             </ul>
           </div>
         </div>
@@ -457,7 +647,7 @@ export default function App() {
       {/* Enquiry Section */}
       <section id="enquiry" className="py-32 px-6 bg-[#FAF7F2]">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-5xl mb-6 text-center" style={{ fontFamily: 'var(--font-serif)' }}>Begin Your Sacred Journey</h2>
+          <h2 className="text-5xl mb-6 text-center" style={{ fontFamily: 'var(--font-serif)' }}>Begin Your Journey</h2>
           <p className="text-center text-lg text-[#6B5D4F] mb-12 max-w-2xl mx-auto">
             Share your details and our yatra specialists will guide you through every step of this profound pilgrimage.
           </p>
@@ -470,6 +660,7 @@ export default function App() {
                   type="text"
                   className="w-full px-4 py-3 bg-white border border-[#D4A574]/30 focus:border-[#C9A961] focus:outline-none transition-colors"
                   placeholder="Your full name"
+                  required
                   value={enquiryName}
                   onChange={(e) => setEnquiryName(e.target.value)}
                 />
@@ -480,6 +671,7 @@ export default function App() {
                   type="tel"
                   className="w-full px-4 py-3 bg-white border border-[#D4A574]/30 focus:border-[#C9A961] focus:outline-none transition-colors"
                   placeholder="Your phone number"
+                  required
                   value={enquiryPhone}
                   onChange={(e) => setEnquiryPhone(e.target.value)}
                 />
@@ -493,6 +685,7 @@ export default function App() {
                 className="w-full px-4 py-3 bg-white border border-[#D4A574]/30 focus:border-[#C9A961] focus:outline-none transition-colors"
                 placeholder="your@email.com"
                 value={enquiryEmail}
+                required
                 onChange={(e) => setEnquiryEmail(e.target.value)}
               />
             </div>
@@ -531,7 +724,7 @@ export default function App() {
       
 
       {/* Footer */}
-      <footer className="py-16 px-6 bg-[#1E3A5F] text-white">
+      <footer className="py-16 px-6 bg-[#2B5954] text-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-3 gap-12 mb-12">
             <div>
@@ -567,7 +760,7 @@ export default function App() {
               <div className="flex flex-col md:flex-row items-center gap-14 text-[14px]">
                 
                 <p className="text-center md:text-left max-w-3xl leading-relaxed">
-                  The holidays offered on SikhChannelYatras are a product powered and managed by Sparrow Path Ltd UK, a member of Protected Trust Services (PTS). All applicable bookings are protected under the ATOL 12960 licence held by Sparrow Path Ltd.
+                  The holidays offered on SikhChannelYatras are a product powered and managed by Sparrow Path Ltd. UK, a member of Protected Trust Services (PTS). All applicable bookings are protected under the ATOL 12960 licence held by Sparrow Path Ltd.
                 </p>
 
                 <div className="flex flex-col items-center gap-2 shrink-0">
@@ -648,151 +841,123 @@ export default function App() {
 const itineraryDays = [
   {
     day: 1,
-    title: "Departure from London (International Flights)",
+    title: "Departure from the UK",
     description: (<div>
       <p>
-        Board an afternoon or evening flight from London Heathrow and settle in for your journey. This will be an overnight flight, and <strong>flights may operate on indirect routes</strong> depending on availability.
+        Board your designated flight from the UK.
       </p>
     </div>)
   },
   {
     day: 2,
-    title: "Arrival in Hyderabad",
+    title: "Arrival in Sri Lanka & Transfer to Colombo",
     description: (<div>
       <p>
-        Upon arrival, and after completing customs, immigration formalities, and baggage collection, the group will be met by our <strong>representative</strong> outside the arrival terminal. The group will then be transferred to the hotel for checkin. In the evening, a <strong>briefing session</strong> will be conducted. Dinner and overnight stay will be at the hotel in Hyderabad.
+Upon arrival at Bandaranaike International Airport, you will be warmly welcomed by your local representative and transferred to the vibrant capital city, Colombo.
+Colombo is a captivating blend of colonial heritage and modern urban life — a city of seaside promenades, bustling markets, stylish cafés, and historic architecture. Depending on your arrival time, enjoy a relaxed evening to unwind and settle in.
+Overnight stay in Colombo.
       </p><br/>
-      <p><strong>Meals:</strong> Dinner at a local restaurant or at the hotel.</p>
     </div>)
   },
   {
     day: 3,
-    title: "Travel Hyderabad to (Hazur Sahib) via Nanak Jhira Sahib. (Coach-320 kms/8 hrs)",
+    title: "Colombo City Tour & Gurudwara Visit",
     description: (<div>
       <p>
-        Breakfast at the hotel. After breakfast, depart from Hyderabad and drive to Bidar, Karnataka. Visit <strong>Gurdwara Sri Nanak Jhira Sahib</strong> for Darshan, followed by Langar at the Gurdwara. Later, continue the journey to <strong> Hazur Sahib (Nanded).</strong> Upon arrival, check in at the hotel for <strong>a twonight stay.</strong>
+      After breakfast, embark on a comprehensive <strong>Colombo City Tour.</strong>
       </p><br/>
-      <p>Dinner and overnight stay at the hotel.</p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+      <p>Discover the city’s cultural and historical highlights, including:</p><br/>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Independence Square</li>
+        <li>Local Gurdwara </li>
+        <li>The colonial era buildings of the Fort district</li>
+        <li>The lively streets of Pettah Market</li>
+        <li>The scenic Galle Face Green oceanfront</li>
+      </ul><br/>
+      <p>A key spiritual highlight is a visit to <strong>Gangaramaya Temple</strong>, renowned for its architecture, sacred relics, and serene atmosphere.</p><br/>
+      <p>You will also visit a local <strong>Gurudwara</strong>, offering a meaningful insight into the Sikh community in Sri Lanka and its traditions of devotion, service, and hospitality.
+Return to your hotel for an evening at leisure. Overnight stay in Colombo.</p>
     </div>)  
   },
   {
     day: 4,
-    title: "In Hazur Sahib",
+    title: "Drive to Sigiriya & Climb the Sigiriya Rock Fortress",
     description: (<div>
       <p>
-        Early morning visit to Gurdwara Takht Sri Hazur Sahib Ji for Darshan. Return to the hotel for breakfast. Later in the morning, the group will proceed to visit several significant historical Gurdwaras, followed by Langar at one of the Gurdwaras.
+After breakfast, visit the <strong>Pinnawala Elephant Orphanage</strong>, a sanctuary for rescued and orphaned elephants. Observe feeding sessions and the elephants bathing in the river — a memorable experience.
       </p><br/>
-      <p>The visits will include:</p><br/>
+      <p>Later, travel towards the Cultural Triangle and arrive in Sigiriya. Climb the legendary <strong>Sigiriya Rock Fortress, a UNESCO World Heritage Site</strong> and one of Sri Lanka’s most iconic landmarks. Built by King Kashyapa in the 5th century, this ancient citadel features:</p><br/>
       <ul className="list-disc pl-5 space-y-1">
-        <li>Gurdwara Sri Maltekri Sahib</li>
-        <li>Gurdwara Sri Heera Ghat Sahib</li>
-        <li>Gurdwara Sri Mata Devan Ji</li>
-        <li>Gurdwara Sri Shikar Ghat Sahib</li>
-        <li>Gurdwara Sri Nagina Ghat Sahib</li>
-        <li>Gurdwara Sri Banda Ghat Sahib</li>
+        <li>Royal pleasure gardens</li>
+        <li>Ingenious water features</li>
+        <li>World famous frescoes</li>
+        <li>The monumental Lion’s Paw entrance</li>
       </ul><br/>
-      <p>In the evening, visit Takht Sri Hazur Sahib once again for Darshan, followed by Langar. Overnight stay at the hotel in Nanded.</p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Langar dinner at the Gurdwara.</p>
+      <p>At the summit, enjoy sweeping views of the surrounding forests and countryside. Continue to Habarana and relax at your nature surrounded hotel.</p>
+      <p>Overnight stay in Habarana.</p>
     </div>)
   },
   {
     day: 5,
-    title: "Travel Hazur Sahib – Hyderabad Airport (290 kms / 6 hours) / Fly to Patna",
+    title: "Dambulla Cave Temple, Spice Garden & Kandy City Tour",
     description: (<div>
       <p>
-        Early breakfast at the hotel. After breakfast, depart from Nanded and begin the drive to Hyderabad. En route, stop at <strong>Gurdwara Yaadgari Baba Zorawar Singh Ji Baba Fateh Singh Ji</strong> for Darshan, followed by Langar. Continue the journey to<strong> Hyderabad Airport </strong> and check in for the flight to Patna.
+After breakfast, visit the magnificent <strong>Dambulla Cave Temple</strong>, a UNESCO World Heritage Site dating back over 2,000 years. Explore its beautifully preserved murals, Buddha statues, and sacred cave shrines.
       </p><br/>
-      <p>
-        Upon arrival in Patna, transfer to the hotel for checkin for a <strong>twonight stay</strong>. Dinner and overnight stay at the hotel in Patna.
-      </p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+      <p>Next, visit a traditional spice garden to learn about Sri Lanka’s world famous spices and their role in cuisine, Ayurveda, and wellness (optional).</p><br/>
+      <p>Continue to Kandy, the cultural capital of Sri Lanka. Enjoy a city tour featuring:</p><br/>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Local markets</li>
+        <li>Scenic viewpoints</li>
+        <li>The picturesque Kandy Lake</li>
+        <li>The monumental Lion’s Paw entrance</li>
+      </ul><br/>
+      <p>Overnight stay in Kandy.</p>
     </div>)
   },
   {
     day: 6,
-    title: "In Patna Sahib (Visit the Takht Sri Harmandir Sahib, Patna)",
+    title: "Temple of the Tooth Relic & Nuwara Eliya Excursion (Tea Gardens)",
     description: (<div>
       <p>
-        Begin your day with breakfast at the hotel before heading to <strong>Gurdwara Takht Sri Patna Sahib</strong> for Darshan. Later, visit several other important and historic Gurdwaras, taking in their spiritual and cultural significance.
+After breakfast, visit the revered <strong>Temple of the Sacred Tooth Relic</strong>, one of the most important Buddhist pilgrimage sites in the world.
       </p><br/>
-      <p>The visits will include:</p><br/>
+      <p>Thereafter, enjoy a scenic drive to <strong>Nuwara Eliya</strong>, often called Little England for its colonial charm, cool climate, and lush tea covered hills. Explore:</p><br/>
       <ul className="list-disc pl-5 space-y-1">
-        <li>Gurdwara Bal Maini Sahib</li>
-        <li>Gurdwara Kangan Ghat</li>
-        <li>Gurdwara Guru Ka Bagh</li>
+        <li>Gregory Lake</li>
+        <li>Tea plantations & viewpoints</li>
+        <li>Colonial era buildings and gardens</li>
+        <li>The charming town centre</li>
       </ul><br/>
-      <p>Enjoy Langar lunch at one of the Gurdwaras. Return to the hotel in the evening for dinner and an overnight stay.</p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+      <p>Return to Kandy in the evening. Overnight stay in Kandy.</p>
     </div>)
   },
   {
     day: 7,
-    title: "Fly Patna to Chandigarh (By Flight)",
+    title: "Drive to the South Sri Lanka Beach with Turtle Hatchery Visit",
     description: (<div>
       <p>
-        Enjoy a leisurely breakfast at the hotel before taking your flight from Patna to Chandigarh. On arrival at <strong>Chandigarh Airport</strong>, proceed to Mohali and check in to your hotel for a <strong>twonight stay.</strong> Dinner and overnight stay at the hotel.
+      After breakfast, depart the hill country and travel towards Sri Lanka’s beautiful coastline. En route, visit a <strong>turtle hatchery</strong>, where conservation teams protect nesting turtles and release hatchlings safely into the ocean. Learn about the five species of sea turtles that visit Sri Lanka’s shores.
       </p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+      <p>Continue to your beach resort and enjoy the remainder of the day at leisure.</p>
     </div>)   
   },
   {
     day: 8,
-    title: "Chandigarh – Day trip to Anandpur Sahib (40 kms / 1 hour)",
+    title: "Leisure by the Beach",
     description: (<div>
       <p>
-        Begin your day with an early breakfast, then set out for <strong>Sri Anandpur Sahib Ji.</strong>
-      </p><br/>
-      <ul className="list-disc pl-5 space-y-1">
-        <li>Explore the historic Anandpur Fort</li>
-        <li>Visit Gurdwara Takht Sri Kesgarh Sahib Ji</li>
-        <li>Sri Sis Ganj Gurdwara.</li>
-      </ul><br/>
-      <p>After partaking in Langar, the group will travel back to Mohali for dinner and a restful overnight stay at the hotel.</p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+      Enjoy a full day at leisure to unwind by the beach, explore the local area, or simply relax with the hotel’s facilities. Overnight stay at the beach.</p>
     </div>)
   },
   {
     day: 9,
-    title: "Chandigarh – Fatehgarh Sahib - Bhatinda (200 kms / 5 Hrs)",
+    title: "Travel to the Colombo airport for the onwards or return flights",
     description: (<div>
       <p>
-        Breakfast at the hotel before travelling to <strong>Sirhind</strong> to visit <strong>Sri Fatehgarh Sahib</strong> for Darshan. After Darshan and Langar, continue the journey towards <strong>Bhatinda</strong>. Upon arrival, check in to the hotel. Dinner and overnight stay at the hotel.
+        After breakfast, transfer to Bandaranaike International Airport for your return flight to UK
       </p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
+       <p><strong>End of the Services!</strong></p>
     </div>)   
-  },
-  {
-    day: 10,
-    title: "Bhatinda – Talwandi Sabo (35 Kms | 60 minutes) - Amritsar (225 Kms / 5 Hrs)",
-    description: (<div>
-      <p>
-        Begin your day with breakfast at the hotel before departing for <strong>Talwandi Sabo</strong>. Here, you will visit <strong>Gurdwara Takht Sri Damdama Sahib</strong>, revered as the fifth Takht of Sikhism. This historic site is where <strong>Guru Gobind Singh Ji</strong> finalised and authenticated the Adi Granth in 1706, incorporating the hymns of <strong>Guru Tegh Bahadur Ji</strong>. It is also remembered for the momentous <strong>Baisakhi of 1706</strong>, when Guru Ji prepared Amrit for nearly 1.2 lakh devotees — a tradition still honoured with deep devotion each year.
-      </p><br/>
-      <p> Following the visit, continue the journey to <strong>Amritsar</strong>, stopping en route for Darshan at <strong>Tarn Taran</strong>. On arrival, check in to your hotel for a <strong>twonight stay</strong>. Dinner and overnight stay at the hotel.
-      </p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • Langar lunch at the Gurdwara • Dinner at the hotel.</p>
-    </div>)  
-  },
-  {
-    day: 11,
-    title: "In Amritsar",
-    description: (<div>
-      <p>Early this morning, visit <strong>Gurdwara Sri Akal Takht Sahib Ji</strong> and witness the <strong>Palki Sewa</strong>, followed by prayers and Darshan at <strong>Sri Harmandir Sahib Ji (Golden Temple)</strong>. You will also have the opportunity to partake in Langar at the world’s largest community kitchen, where <strong>tens of thousands of people</strong> are served freshly prepared meals every day at no cost.
-      </p><br/>
-      <p> Return to your hotel for breakfast. The remainder of the day is free for guests’ own independent activities. Dinner and overnight stay at the hotel.
-      </p><br/>
-      <p><strong>Meals:</strong> Breakfast at the hotel • No lunch (free day) • Dinner at the hotel.</p>
-    </div>)  
-  },
-  {
-    day: 12,
-    title: "Departure out of Amritsar",
-    description: (<div>
-      <p>The group will be transferred to <strong>Amritsar Airport</strong> as scheduled for onward flights to the UK. Upon arrival in London, the tour comes to an end.</p><br/>
-      <p> <strong>Passengers Extending Their Stay in India:</strong> Guests planning to extend their stay in Punjab may check out of the hotel on <strong>16th October 2026 by 1100 hours</strong>. All onward departures will need to be arranged <strong>independently</strong>, unless prior arrangements have been made with us.
-      </p><br/>
-      <p><strong>End of the Services!</strong></p>
-    </div>)  
   }
 ];

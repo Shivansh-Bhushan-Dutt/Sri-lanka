@@ -12,7 +12,7 @@
   --card-foreground: #1A1A1A;
   --popover: #FFFFFF;
   --popover-foreground: #1A1A1A;
-  --primary: #1E3A5F;
+  --primary: #2B5954;
   --primary-foreground: #FAF7F2;
   --secondary: #D4A574;
   --secondary-foreground: #1A1A1A;
@@ -186,5 +186,108 @@
     font-size: var(--text-base);
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
+  }
+}
+
+.hero-slide {
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 1400ms ease;
+}
+
+.hero-slide.is-active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.hero-slide-image {
+  transform: scale(1.04) translate3d(0, 0, 0);
+}
+
+.hero-slide.is-active .hero-slide-image {
+  animation: heroKenBurns 5200ms ease-out forwards;
+}
+
+.hero-copy {
+  animation: copySlideUp 760ms ease both;
+}
+
+.hero-copy-delay-1 {
+  animation: copySlideUp 820ms ease 120ms both;
+}
+
+.hero-copy-delay-2 {
+  animation: copySlideUp 820ms ease 240ms both;
+}
+
+.highlight-media {
+  min-height: 360px;
+  aspect-ratio: 4 / 3;
+}
+
+.highlight-image {
+  opacity: 0;
+  transform: scale(1.02) translateX(12px);
+  transition: opacity 900ms ease, transform 1200ms ease;
+}
+
+.highlight-image.is-active {
+  opacity: 1;
+  transform: scale(1.08) translateX(0);
+  animation: highlightKenBurns 5200ms ease-out forwards;
+}
+
+.highlight-copy {
+  animation: copySlideUp 680ms ease both;
+}
+
+@keyframes heroKenBurns {
+  0% {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: scale(1.14) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+@keyframes highlightKenBurns {
+  0% {
+    transform: scale(1.02) translateX(10px);
+  }
+
+  100% {
+    transform: scale(1.09) translateX(-8px);
+  }
+}
+
+@keyframes copySlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  .highlight-media {
+    min-height: 280px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide,
+  .hero-slide-image,
+  .hero-copy,
+  .hero-copy-delay-1,
+  .hero-copy-delay-2,
+  .highlight-image,
+  .highlight-copy {
+    animation: none;
+    transition-duration: 0.01ms;
   }
 }
