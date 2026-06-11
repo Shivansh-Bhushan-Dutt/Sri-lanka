@@ -346,17 +346,17 @@ export default function App() {
                 </p>
 
                 <div className="flex items-baseline justify-center gap-3">
-                  <span className="text-sm sm:text-base text-[#9A8F7E] line-through">£2350</span>
+                  <span className="text-sm sm:text-base text-[#9A8F7E] line-through">£1995</span>
                   <span
                     className="text-3xl sm:text-4xl text-[#1A1A1A]"
                     style={{ fontFamily: "var(--font-serif)" }}
                   >
-                    £2250<span className="text-sm"> pp</span>
+                    £1895<span className="text-sm"> pp</span>
                   </span>
                 </div>
 
                 <p className="text-sm text-[#6B5D4F] mt-2">
-                  Valid Till 15th November
+                  Valid Till 31st July 2026
                 </p>
               </div>
             </div>
@@ -371,7 +371,7 @@ export default function App() {
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
                 <Compass className="w-8 h-8 text-[#2B5954]" />
               </div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Guided Yatra</p>
+              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Guided journey</p>
               <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Expert-led visits</p>
             </div>
             <div className="text-center">
@@ -424,11 +424,11 @@ export default function App() {
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Departure</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>05 November 2026</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>10th Nov 2026</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Package price</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £ 2395 pp</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £1995 pp</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Reservation</p>
@@ -587,7 +587,7 @@ export default function App() {
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Overall</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
                 <li className="text-[14px]">Return flights from London</li>
-                <li className="text-[14px]">All domestic flights</li>
+                <li className="text-[14px]">Exciting cultural tours</li>
                 <li className="text-[14px]">Private coach transport</li>
                 <li className="text-[14px]">Experienced Tour manager</li>
               </ul>
@@ -595,7 +595,7 @@ export default function App() {
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Accommodation</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[14px]">8 nights quality hotels</li>
+                <li className="text-[14px]">7 nights quality hotels</li>
                 <li className="text-[14px]">Twin/double rooms</li>
                 <li className="text-[14px]">Daily housekeeping</li>
                 <li className="text-[14px]">Modern amenities</li>
@@ -604,17 +604,17 @@ export default function App() {
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Experiences</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[14px]">All Five Takhts</li>
-                <li className="text-[14px]">Other Historical Gurudwaras</li>
-                <li className="text-[14px]">Special Darshans</li>
-                <li className="text-[14px]">Spiritual insights</li>
+                <li className="text-[14px]">Exquisite Landscapes, Beaches & Tea Gardens</li>
+                <li className="text-[14px]">Colonial Charm & traditional folk dances</li>
+                <li className="text-[14px]">Two UNESCO World Heritage Sites & Elephants</li>
+                <li className="text-[14px]">Historical monuments & local Gurdwara</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Meals</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
                 <li className="text-[14px]">Daily breakfast</li>
-                <li className="text-[14px]">Langar participation</li>
+                <li className="text-[14px]">Traditional local cuisines</li>
                 <li className="text-[14px]">Selected dinners</li>
                 <li className="text-[14px]">Vegetarian options</li>
               </ul>
@@ -695,7 +695,7 @@ export default function App() {
               <textarea
                 rows={6}
                 className="w-full px-4 py-3 bg-white border border-[#D4A574]/30 focus:border-[#C9A961] focus:outline-none transition-colors resize-none"
-                placeholder="Tell us about your pilgrimage aspirations..."
+                placeholder="Tell us about your journey aspirations..."
                 value={enquiryMessage}
                 onChange={(e) => setEnquiryMessage(e.target.value)}
               />
