@@ -399,7 +399,7 @@ export default function App() {
             <p className="text-[15px]">
             Experience a land where history rises from stone, nature thrives in abundance, and every moment feels like a postcard.</p>
             <p className="text-[15px]">
-              A Journey of Culture, Nature & Serenity Awaits.</p>
+              <strong></>A Journey of Culture, Nature & Serenity Awaits.</strong></p>
             <p className="text-[15px]">
               Let Sri Lanka’s beauty unfold before you — from ancient wonders to lush highlands, from wildlife encounters to tranquil beaches. Your unforgettable island adventure begins here.
             </p>
