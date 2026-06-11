@@ -3,28 +3,28 @@ import { Phone, Coffee, Sparkles, Handshake, Compass, MapPin, ChevronDown, Chevr
 
 const heroSlides = [
   {
-    image: "/southern_coast.jpg",
-    title: "Wonders of Sri Lanka ",
-    subtitle: "the Golden Beaches",
-    date: "(05 - 16 November 2026)",
+    image: "/sigiriya.jpg",
+    title: "Wonders of Sri Lanka",
+    subtitle: "Begin with Misty Hills",
+    date: "(10 - 18 November 2026)",
   },
   {
     image: "/sri_lanka.jpg",
-    title: "Sri Lanka",
-    subtitle: "Journey of a Lifetime",
-    date: "(05 - 16 November 2026)",
+    title: "Wonders of Sri Lanka",
+    subtitle: "Memorable Journey",
+    date: "(10 - 18 November 2026)",
   },
   {
     image: "/pinnawala.jpg",
-    title: "Pinnawala",
+    title: "Wonders of Sri Lanka",
     subtitle: "the Island of Ancient Kingdoms",
-    date: "Elephant Orphanage experience",
+    date: "(10 - 18 November 2026)",
   },
   {
-    image: "/sigiriya.jpg",
-    title: "Sigiriya",
-    subtitle: "Begin with Misty Hills",
-    date: "Lanka",
+    image: "/southern_coast.jpg",
+    title: "Wonders of Sri Lanka ",
+    subtitle: "the Golden Beaches",
+    date: "(10 - 18 November 2026)",
   },
 ];
 
