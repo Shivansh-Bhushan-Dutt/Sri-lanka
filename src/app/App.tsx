@@ -649,7 +649,7 @@ export default function App() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-5xl mb-6 text-center" style={{ fontFamily: 'var(--font-serif)' }}>Begin Your Journey</h2>
           <p className="text-center text-lg text-[#6B5D4F] mb-12 max-w-2xl mx-auto">
-            Share your details and our yatra specialists will guide you through every step of this profound pilgrimage.
+            Share your details and our specialists will guide you through every step of this profound journey.
           </p>
 
           <form className="space-y-6" onSubmit={handleEnquirySubmit}>
