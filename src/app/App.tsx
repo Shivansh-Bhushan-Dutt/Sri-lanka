@@ -3,28 +3,28 @@ import { Phone, Coffee, Sparkles, Handshake, Compass, MapPin, ChevronDown, Chevr
 
 const heroSlides = [
   {
-    image: "/southern_coast.jpg",
-    title: "Wonders of Sri Lanka ",
-    subtitle: "the Golden Beaches",
-    date: "(05 - 16 November 2026)",
+    image: "/sigiriya.jpg",
+    title: "Wonders of Sri Lanka",
+    subtitle: "Begin with Misty Hills",
+    date: "(06 – 14 December 2026)",
   },
   {
     image: "/sri_lanka.jpg",
-    title: "Sri Lanka",
-    subtitle: "Journey of a Lifetime",
-    date: "(05 - 16 November 2026)",
+    title: "Wonders of Sri Lanka",
+    subtitle: "Memorable Journey",
+    date: "(06 – 14 December 2026)",
   },
   {
     image: "/pinnawala.jpg",
-    title: "Pinnawala",
-    subtitle: "the Island of Ancient Kingdoms",
-    date: "Elephant Orphanage experience",
+    title: "Wonders of Sri Lanka",
+    subtitle: "The Island of Ancient Kingdoms",
+    date: "(06 – 14 December 2026)",
   },
   {
-    image: "/sigiriya.jpg",
-    title: "Sigiriya",
-    subtitle: "Begin with Misty Hills",
-    date: "Lanka",
+    image: "/southern_coast.jpg",
+    title: "Wonders of Sri Lanka",
+    subtitle: "The Golden Beaches",
+    date: "(06 – 14 December 2026)",
   },
 ];
 
@@ -61,6 +61,13 @@ const highlightSlides = [
     image: "/kandy.jpg",
     tag: "Kandy",
     title: "Cultural capital & home of the Sacred Tooth Relic",
+    description:
+      "Continue through completing a powerful route.",
+  },
+  {
+    image: "/fire_show.jpg",
+    tag: "Kandy",
+    title: "Traditional Cultural Show & Fire Dance in Kandy",
     description:
       "Continue through completing a powerful route.",
   },
@@ -346,17 +353,16 @@ export default function App() {
                 </p>
 
                 <div className="flex items-baseline justify-center gap-3">
-                  <span className="text-sm sm:text-base text-[#9A8F7E] line-through">£2350</span>
+                  <span className="text-sm sm:text-base text-[#9A8F7E] line-through">£1995</span>
                   <span
                     className="text-3xl sm:text-4xl text-[#1A1A1A]"
                     style={{ fontFamily: "var(--font-serif)" }}
-                  >
-                    £2250<span className="text-sm"> pp</span>
+                  > £1925<span className="text-sm"> pp</span>
                   </span>
                 </div>
 
                 <p className="text-sm text-[#6B5D4F] mt-2">
-                  Valid Till 15th June
+                  Valid Till 10th Aug 2026.
                 </p>
               </div>
             </div>
@@ -365,13 +371,13 @@ export default function App() {
                 <Handshake className="w-8 h-8 text-[#2B5954]" />
               </div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Experience</p>
-              <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Spiritual Journey</p>
+              <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Cultural Journey</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 bg-[#FAF7F2] rounded-full flex items-center justify-center">
                 <Compass className="w-8 h-8 text-[#2B5954]" />
               </div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Guided Yatra</p>
+              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2">Guided journey</p>
               <p className="text-2xl" style={{ fontFamily: 'var(--font-serif)' }}>Expert-led visits</p>
             </div>
             <div className="text-center">
@@ -398,8 +404,8 @@ export default function App() {
             Sri Lanka — <strong>the Wonder of Asia</strong> — invites you on a journey through its timeless heritage, breathtaking landscapes, and warm island hospitality. From the cultural treasures of the ancient capitals to the serenity of tea covered highlands, from vibrant Colombo to the wildlife of Yala and the sun kissed southern coast, this tour captures the very essence of Ceylon.</p>
             <p className="text-[15px]">
             Experience a land where history rises from stone, nature thrives in abundance, and every moment feels like a postcard.</p>
-            <p className="text-[15px]">
-              A Journey of Culture, Nature & Serenity Awaits.</p>
+            <p className="text-[15px]"><strong>
+              A Journey of Culture, Nature & Serenity Awaits.</strong></p>
             <p className="text-[15px]">
               Let Sri Lanka’s beauty unfold before you — from ancient wonders to lush highlands, from wildlife encounters to tranquil beaches. Your unforgettable island adventure begins here.
             </p>
@@ -424,11 +430,11 @@ export default function App() {
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Departure</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>05 November 2026</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>06th Dec 2026</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Package price</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £ 2395 pp</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £1995 pp</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Reservation</p>
@@ -587,7 +593,8 @@ export default function App() {
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Overall</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
                 <li className="text-[14px]">Return flights from London</li>
-                <li className="text-[14px]">All domestic flights</li>
+                <li className="text-[14px]">Exciting cultural tours</li>
+                <li className="text-[14px]">Wonderful experiences</li>
                 <li className="text-[14px]">Private coach transport</li>
                 <li className="text-[14px]">Experienced Tour manager</li>
               </ul>
@@ -595,7 +602,8 @@ export default function App() {
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Accommodation</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[14px]">8 nights quality hotels</li>
+                <li className="text-[14px]">7 nights at selected hotels</li>
+                <li className="text-[14px]">Mix of Modern & Resorts</li>
                 <li className="text-[14px]">Twin/double rooms</li>
                 <li className="text-[14px]">Daily housekeeping</li>
                 <li className="text-[14px]">Modern amenities</li>
@@ -604,17 +612,19 @@ export default function App() {
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Experiences</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
-                <li className="text-[14px]">All Five Takhts</li>
-                <li className="text-[14px]">Other Historical Gurudwaras</li>
-                <li className="text-[14px]">Special Darshans</li>
-                <li className="text-[14px]">Spiritual insights</li>
+                <li className="text-[14px]">Landscapes, Beaches & Tea Gardens</li>
+                <li className="text-[14px]">Colonial Charm & Natural Elephants</li>
+                <li className="text-[14px]">Traditional Folk Dances</li>
+                <li className="text-[14px]">UNESCO World Heritage Sites</li>
+                <li className="text-[14px]">Historical monuments</li>
+                <li className="text-[14px]">Local Gurdwara & Temples</li>
               </ul>
             </div>
             <div>
               <h3 className="text-xl mb-4 text-[#C9A961]" style={{ fontFamily: 'var(--font-serif)' }}>Meals</h3>
               <ul className="space-y-2 text-[#3A3A3A]">
                 <li className="text-[14px]">Daily breakfast</li>
-                <li className="text-[14px]">Langar participation</li>
+                <li className="text-[14px]">Traditional local cuisines</li>
                 <li className="text-[14px]">Selected dinners</li>
                 <li className="text-[14px]">Vegetarian options</li>
               </ul>
@@ -626,6 +636,7 @@ export default function App() {
                 <li className="text-[14px]">Travel documentation</li>
                 <li className="text-[14px]">Pre-departure briefing</li>
                 <li className="text-[14px]">ATOL protection</li>
+                <li className="text-[14px]">Travel confidently</li>
               </ul>
             </div>
           </div>
@@ -649,7 +660,7 @@ export default function App() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-5xl mb-6 text-center" style={{ fontFamily: 'var(--font-serif)' }}>Begin Your Journey</h2>
           <p className="text-center text-lg text-[#6B5D4F] mb-12 max-w-2xl mx-auto">
-            Share your details and our yatra specialists will guide you through every step of this profound pilgrimage.
+            Share your details and our specialists will guide you through every step of this profound journey.
           </p>
 
           <form className="space-y-6" onSubmit={handleEnquirySubmit}>
@@ -695,7 +706,7 @@ export default function App() {
               <textarea
                 rows={6}
                 className="w-full px-4 py-3 bg-white border border-[#D4A574]/30 focus:border-[#C9A961] focus:outline-none transition-colors resize-none"
-                placeholder="Tell us about your pilgrimage aspirations..."
+                placeholder="Tell us about your journey aspirations..."
                 value={enquiryMessage}
                 onChange={(e) => setEnquiryMessage(e.target.value)}
               />
@@ -844,24 +855,22 @@ const itineraryDays = [
     title: "Departure from the UK",
     description: (<div>
       <p>
-        Board your designated flight from the UK.
+        Board your designated flight from the UK. Overnight flights.
       </p>
     </div>)
   },
   {
     day: 2,
-    title: "Arrival in Sri Lanka & Transfer to Colombo",
+    title: "Arrival in Sri Lanka &amp; Transfer to Colombo – Orientation",
     description: (<div>
       <p>
-Upon arrival at Bandaranaike International Airport, you will be warmly welcomed by your local representative and transferred to the vibrant capital city, Colombo.
-Colombo is a captivating blend of colonial heritage and modern urban life — a city of seaside promenades, bustling markets, stylish cafés, and historic architecture. Depending on your arrival time, enjoy a relaxed evening to unwind and settle in.
-Overnight stay in Colombo.
+Upon arrival at Bandaranaike International Airport, you will be warmly welcomed by your local representative and transferred to the vibrant capital city, Colombo. Colombo is a captivating blend of colonial heritage and modern urban life — a city of seaside promenades, bustling markets, stylish cafés, and historic architecture. Depending on your arrival time, enjoy a relaxed evening to unwind and settle in. Overnight stay in Colombo.
       </p><br/>
     </div>)
   },
   {
     day: 3,
-    title: "Colombo City Tour & Gurudwara Visit",
+    title: "Colombo City & Gurudwara Visit – Drive to Habarana via Pinnawala",
     description: (<div>
       <p>
       After breakfast, embark on a comprehensive <strong>Colombo City Tour.</strong>
@@ -874,9 +883,9 @@ Overnight stay in Colombo.
         <li>The lively streets of Pettah Market</li>
         <li>The scenic Galle Face Green oceanfront</li>
       </ul><br/>
-      <p>A key spiritual highlight is a visit to <strong>Gangaramaya Temple</strong>, renowned for its architecture, sacred relics, and serene atmosphere.</p><br/>
-      <p>You will also visit a local <strong>Gurudwara</strong>, offering a meaningful insight into the Sikh community in Sri Lanka and its traditions of devotion, service, and hospitality.
-Return to your hotel for an evening at leisure. Overnight stay in Colombo.</p>
+      <p>A key spiritual highlight is a visit to <strong>Gangaramaya Temple</strong>, renowned for its architecture, sacred relics, and serene atmosphere. You will also visit a local <strong>Gurudwara</strong>, offering a meaningful insight into the Sikh community in Sri Lanka and its traditions of devotion, service, and hospitality.</p><br/>
+      <p>Later, drive towards Habarana enroute visit the <strong>Pinnawala Elephant Orphanage</strong>, a sanctuary for rescued and orphaned elephants. Observe feeding sessions or the elephants bathing in the river — a memorable experience.</p><br/>
+      <p>Continue the drive to Habarana, and check-in to the hotel for two-night stay.</p>
     </div>)  
   },
   {
@@ -884,17 +893,15 @@ Return to your hotel for an evening at leisure. Overnight stay in Colombo.</p>
     title: "Drive to Sigiriya & Climb the Sigiriya Rock Fortress",
     description: (<div>
       <p>
-After breakfast, visit the <strong>Pinnawala Elephant Orphanage</strong>, a sanctuary for rescued and orphaned elephants. Observe feeding sessions and the elephants bathing in the river — a memorable experience.
-      </p><br/>
-      <p>Later, travel towards the Cultural Triangle and arrive in Sigiriya. Climb the legendary <strong>Sigiriya Rock Fortress, a UNESCO World Heritage Site</strong> and one of Sri Lanka’s most iconic landmarks. Built by King Kashyapa in the 5th century, this ancient citadel features:</p><br/>
+After breakfast, visit the legendary <strong>Sigiriya Rock Fortress, a UNESCO World Heritage Site</strong> and climb one of Sri Lanka’s most iconic landmarks. Built by King Kashyapa in the 5th century, this ancient citadel features:</p><br/>
       <ul className="list-disc pl-5 space-y-1">
         <li>Royal pleasure gardens</li>
         <li>Ingenious water features</li>
         <li>World famous frescoes</li>
         <li>The monumental Lion’s Paw entrance</li>
       </ul><br/>
-      <p>At the summit, enjoy sweeping views of the surrounding forests and countryside. Continue to Habarana and relax at your nature surrounded hotel.</p>
-      <p>Overnight stay in Habarana.</p>
+      <p>At the summit, enjoy sweeping views of the surrounding forests and countryside. Later visit a village for an experience of the local life.</p><br/>
+      <p>Return to the hotel in Habarana and relax at your naturesurrounded hotel. Overnight stay in Habarana.</p>
     </div>)
   },
   {
@@ -910,19 +917,18 @@ After breakfast, visit the magnificent <strong>Dambulla Cave Temple</strong>, a 
         <li>Local markets</li>
         <li>Scenic viewpoints</li>
         <li>The picturesque Kandy Lake</li>
-        <li>The monumental Lion’s Paw entrance</li>
+        <li>A visit to the revered Temple of the Sacred Tooth Relic, one of the most important Buddhist pilgrimage sites in the world.</li>
+        <li>Evening, you will witness and enjoy a Cultural show in Kandy.</li>
       </ul><br/>
-      <p>Overnight stay in Kandy.</p>
+      <p>Overnight stay in a hotel in Kandy.</p>
     </div>)
   },
   {
     day: 6,
-    title: "Temple of the Tooth Relic & Nuwara Eliya Excursion (Tea Gardens)",
+    title: "Excursion to Nuwara Eliya Excursion (Tea Gardens)",
     description: (<div>
       <p>
-After breakfast, visit the revered <strong>Temple of the Sacred Tooth Relic</strong>, one of the most important Buddhist pilgrimage sites in the world.
-      </p><br/>
-      <p>Thereafter, enjoy a scenic drive to <strong>Nuwara Eliya</strong>, often called Little England for its colonial charm, cool climate, and lush tea covered hills. Explore:</p><br/>
+After breakfast, enjoy a scenic drive to <strong>Nuwara Eliya</strong>, often called Little England for its colonial charm, cool climate, and lush teacovered hills. Explore:</p><br/>
       <ul className="list-disc pl-5 space-y-1">
         <li>Gregory Lake</li>
         <li>Tea plantations & viewpoints</li>
@@ -939,7 +945,7 @@ After breakfast, visit the revered <strong>Temple of the Sacred Tooth Relic</str
       <p>
       After breakfast, depart the hill country and travel towards Sri Lanka’s beautiful coastline. En route, visit a <strong>turtle hatchery</strong>, where conservation teams protect nesting turtles and release hatchlings safely into the ocean. Learn about the five species of sea turtles that visit Sri Lanka’s shores.
       </p><br/>
-      <p>Continue to your beach resort and enjoy the remainder of the day at leisure.</p>
+      <p>Continue to your beach resort and enjoy the remainder of the day at leisure. Overnight stay at one of the beach resorts.</p>
     </div>)   
   },
   {
@@ -947,7 +953,7 @@ After breakfast, visit the revered <strong>Temple of the Sacred Tooth Relic</str
     title: "Leisure by the Beach",
     description: (<div>
       <p>
-      Enjoy a full day at leisure to unwind by the beach, explore the local area, or simply relax with the hotel’s facilities. Overnight stay at the beach.</p>
+      Enjoy a full day at leisure to unwind by the beach, explore the local area, or simply relax with the hotel’s facilities. Overnight stay at the beach resort.</p>
     </div>)
   },
   {
@@ -957,7 +963,7 @@ After breakfast, visit the revered <strong>Temple of the Sacred Tooth Relic</str
       <p>
         After breakfast, transfer to Bandaranaike International Airport for your return flight to UK
       </p><br/>
-       <p><strong>End of the Services!</strong></p>
+       <p><strong>End of the Tour!</strong></p>
     </div>)   
   }
 ];
