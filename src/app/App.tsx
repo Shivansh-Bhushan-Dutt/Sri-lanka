@@ -355,7 +355,7 @@ export default function App() {
                 <div className="flex items-baseline justify-center gap-3">
                   <span className="text-sm sm:text-base text-[#9A8F7E] line-through">£1995</span>
                   <span
-                    className="text-3xl sm:text-4xl text-[#1A1A1A]"
+                    className="text-4xl sm:text-5xl text-[#C9A961] font-bold"
                     style={{ fontFamily: "var(--font-serif)" }}
                   > £1925<span className="text-sm"> pp</span>
                   </span>
@@ -426,7 +426,7 @@ export default function App() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-[#D4A574]/30">
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Duration</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>8 Nights / 9 Days</p>
+              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>9 Days</p>
             </div>
             <div>
               <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Departure</p>
@@ -861,7 +861,7 @@ const itineraryDays = [
   },
   {
     day: 2,
-    title: "Arrival in Sri Lanka &amp; Transfer to Colombo – Orientation",
+    title: "Arrival in Sri Lanka & Transfer to Colombo – Orientation",
     description: (<div>
       <p>
 Upon arrival at Bandaranaike International Airport, you will be warmly welcomed by your local representative and transferred to the vibrant capital city, Colombo. Colombo is a captivating blend of colonial heritage and modern urban life — a city of seaside promenades, bustling markets, stylish cafés, and historic architecture. Depending on your arrival time, enjoy a relaxed evening to unwind and settle in. Overnight stay in Colombo.
