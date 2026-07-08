@@ -352,16 +352,40 @@ export default function App() {
                   <strong> Early Bird Offer</strong>
                 </p>
 
-                <div className="flex items-baseline justify-center gap-3">
-                  <span className="text-sm sm:text-base text-[#9A8F7E] line-through">£1995</span>
-                  <span
-                    className="text-4xl sm:text-5xl text-[#C9A961] font-bold"
-                    style={{ fontFamily: "var(--font-serif)" }}
-                  > £1925<span className="text-sm"> pp</span>
+                <div className="mt-4 flex flex-col items-center gap-2">
+                  {/* Original Price */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs uppercase tracking-[0.16em] text-[#9A8F7E]">
+                      Was
+                    </span>
+                    <span className="text-base text-[#9A8F7E] line-through decoration-[#9A8F7E]/70">
+                      £1995
+                    </span>
+                  </div>
+
+                  {/* Early Bird Price */}
+                  <div className="flex items-baseline justify-center gap-2">
+                    <span className="text-xs uppercase tracking-[0.16em] text-[#2B5954]">
+                      Now
+                    </span>
+
+                    <span
+                      className="text-4xl sm:text-5xl text-[#C9A961]"
+                      style={{ fontFamily: "var(--font-serif)" }}
+                    >
+                      £1925
+                    </span>
+
+                    <span className="text-sm text-[#6B5D4F]">pp</span>
+                  </div>
+
+                  {/* Saving Badge */}
+                  <span className="inline-flex items-center rounded-full bg-[#2B5954]/10 px-3 py-1 text-xs font-medium tracking-[0.08em] text-[#2B5954]">
+                    Save £70 per person
                   </span>
                 </div>
 
-                <p className="text-sm text-[#6B5D4F] mt-2">
+                <p className="text-sm text-[#6B5D4F] mt-4">
                   Valid Till 10th Aug 2026.
                 </p>
               </div>
@@ -423,22 +447,22 @@ export default function App() {
             UK Airport → Colombo → Pinnawala → Sigiriya → Dambulla → Spice Village Matale →Kandy → Nuwara Eliya → Southern Coast Beach → Colombo →UK Airport
           </p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-[#D4A574]/30">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-8 border-t border-[#D4A574]/40">
             <div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Duration</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>9 Days</p>
+              <p className="text-sm uppercase tracking-widest text-[#C9A961] mb-2 font-bold">Duration</p>
+              <p className="text-xl text-[#2B5954] font-bold" style={{ fontFamily: 'var(--font-serif)' }}>9 Days</p>
             </div>
             <div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Departure</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>06th Dec 2026</p>
+              <p className="text-sm uppercase tracking-widest text-[#C9A961] mb-2 font-bold">Departure</p>
+              <p className="text-xl text-[#2B5954] font-bold" style={{ fontFamily: 'var(--font-serif)' }}>06th Dec 2026</p>
             </div>
             <div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Package price</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>from £1995 pp</p>
+              <p className="text-sm uppercase tracking-widest text-[#C9A961] mb-2 font-bold">Package price</p>
+              <p className="text-xl text-[#2B5954] font-bold" style={{ fontFamily: 'var(--font-serif)' }}>from £1995 pp</p>
             </div>
             <div>
-              <p className="text-sm uppercase tracking-widest text-[#6B5D4F] mb-2 font-bold">Reservation</p>
-              <p className="text-lg" style={{ fontFamily: 'var(--font-serif)' }}>0203 909 5800</p>
+              <p className="text-sm uppercase tracking-widest text-[#C9A961] mb-2 font-bold">Reservation</p>
+              <p className="text-xl text-[#2B5954] font-bold" style={{ fontFamily: 'var(--font-serif)' }}>0203 909 5800</p>
             </div>
           </div>
         </div>
